@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #f8f8f8;">
+        <div class="card" style="width: calc(100%/3);">
+            <div class="card-header">Đăng nhập</div>
+            <div class="card-body">
+                <form method="post" id="loginForm" action="login" accept-charset="utf-8">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="username" id="emailID" placeholder="Tên đăng nhập"></input>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" id="passwordID" placeholder="Mật khẩu"></input>
+                        <div th:if="${ErrorMessage}" th:utext="${ErrorMessage}"
+                             style="color:red;font-style:italic;">
+
+                        </div>
+                    </div>
+                    <div class="mb-3 d-grid gap-2">
+                    <button class="btn btn-success btn-block">Đăng nhập</button>
+                    </div>
+                    <div class="mb-3">
+                    <a href="register" class="d-flex justify-content-end">Đăng kí</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

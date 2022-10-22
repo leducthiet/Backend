@@ -1,13 +1,13 @@
 package com.DoAnTotNghiep.core.user.entity;
 
+import com.DoAnTotNghiep.core.hotel.entity.RoomBooking;
+import com.DoAnTotNghiep.core.tour.entity.TourBooking;
 import com.DoAnTotNghiep.core.user.domain.Role;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,4 +37,12 @@ public class Users {
     private boolean isActive;
 
     private Role role;
+
+    private String avatar;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
+    private List<TourBooking> tourBookings;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
+    private List<RoomBooking> roomBookings;
 }

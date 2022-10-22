@@ -4,7 +4,8 @@ import java.util.Arrays;
 
 public enum Role {
     ROLE_SYSTEM_ADMIN(0),
-    ROLE_CUSTOMER(1);
+    ROLE_MANAGER(1),
+    ROLE_CUSTOMER(2);
 
     private final Integer value;
 

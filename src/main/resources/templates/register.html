@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng kí</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #f8f8f8;">
+    <div class="card" style="width: calc(100%/3);">
+        <div class="card-header">Đăng kí</div>
+        <div class="card-body">
+            <form id="registerForm" method="post" action="register">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Tên đăng nhập"></input>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email"></input>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu"></input>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="repassword" name="repassword" placeholder="Nhập lại mật khẩu"></input>
+                </div>
+                <div class="mb-3 d-grid gap-2">
+                    <button class="btn btn-success btn-block">Đăng kí</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
