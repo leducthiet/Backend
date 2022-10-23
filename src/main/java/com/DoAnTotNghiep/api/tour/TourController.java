@@ -1,19 +1,19 @@
 package com.DoAnTotNghiep.api.tour;
 
+import com.DoAnTotNghiep.core.auth.model.UserImpl;
 import com.DoAnTotNghiep.core.tour.entity.Province;
 import com.DoAnTotNghiep.core.tour.entity.Tour;
+import com.DoAnTotNghiep.core.tour.entity.TourBooking;
 import com.DoAnTotNghiep.core.tour.entity.TourImage;
-import com.DoAnTotNghiep.core.tour.service.ProvinceService;
-import com.DoAnTotNghiep.core.tour.service.TourImageService;
-import com.DoAnTotNghiep.core.tour.service.TourService;
-import com.DoAnTotNghiep.core.tour.service.TourTypeService;
+import com.DoAnTotNghiep.core.tour.service.*;
+import com.DoAnTotNghiep.core.user.entity.Users;
+import com.DoAnTotNghiep.core.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -36,6 +39,12 @@ public class TourController {
 
     @Autowired
     TourImageService tourImageService;
+
+    @Autowired
+    TourBookingService tourBookingService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/tour")
     public String getTour(Model model) {
@@ -119,5 +128,39 @@ public class TourController {
 
 
         response.sendRedirect("/tour");
+    }
+
+    @GetMapping("/tourDetail/{id}")
+    public String tourDetail(@PathVariable(name = "id") Long tourId, Model model) {
+        model.addAttribute("tour", tourService.findById(tourId));
+        model.addAttribute("tourImages", tourImageService.getTourImageByTourId(tourId));
+        return "Detail";
+    }
+
+    @GetMapping("/tourOrder/{id}")
+    public String tourOrder(@PathVariable(name = "id") Long tourId, Model model) {
+        model.addAttribute("tour", tourService.findById(tourId));
+        return "Order";
+    }
+
+    @PostMapping("/submitOrder")
+    public String submitOrder(Model model,
+                              @ModelAttribute("tourBooking") TourBooking tourBooking,
+                              @RequestParam("startDateString") String startDateString,
+                              @RequestParam("tourId") Long tourId) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            tourBooking.setStartDate(dateFormat.parse(startDateString));
+            tourBooking.setTour(tourService.findById(tourId));
+
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserImpl userImpl = (UserImpl) userDetails;
+            tourBooking.setUsers(userService.findById(userImpl.getUsers().getId()));
+
+            tourBookingService.createTourBooking(tourBooking);
+            return "Success";
+        } catch (Exception e) {
+            return "Error";
+        }
     }
 }

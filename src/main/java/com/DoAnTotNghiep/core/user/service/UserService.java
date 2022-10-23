@@ -1,5 +1,6 @@
 package com.DoAnTotNghiep.core.user.service;
 
+import com.DoAnTotNghiep.config.exception.BadRequestException;
 import com.DoAnTotNghiep.core.user.domain.Role;
 import com.DoAnTotNghiep.core.user.entity.Users;
 import com.DoAnTotNghiep.core.user.repository.UserRepository;
@@ -17,5 +18,9 @@ public class UserService {
         users.setActive(true);
         users.setRole(Role.ROLE_CUSTOMER);
         userRepository.save(users);
+    }
+
+    public Users findById(Long id) {
+        return userRepository.findById(id).orElseThrow(BadRequestException::new);
     }
 }

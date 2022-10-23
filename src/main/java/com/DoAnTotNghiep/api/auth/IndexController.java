@@ -4,11 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @Controller
 public class IndexController {
 
     @GetMapping("/")
-    public String index() {
-        return "index";
+    public void index(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/tourUser");
     }
 }
