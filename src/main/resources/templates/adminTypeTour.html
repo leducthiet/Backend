@@ -11,64 +11,10 @@
 </head>
 <body>
 <div class="container-fluid " style="height: 100vh; padding: 0;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border border-gray" style="width: 100%; height: 8%;">
-        <a class="navbar-brand" href="#" style="font-size: 1rem; padding: 0;">Quản lý</a>
-
-        <div class="collapse navbar-collapse " id="navbarSupportedContent">
-
-            <ul class="navbar-nav ml-auto d-flex justify-content-end">
-                <li class="nav-item dropdown" style="display: inline; float: right;">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false" style="padding: 0;">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="profile.html">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            Thông tin cá nhân
-                        </a>
-                        <a class="dropdown-item" href="login.html">
-                            <i class="fas fa-sign-out"></i>
-                            Đăng xuất
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <div th:replace="fragments/headerAdmin :: header">...</div>
 
     <div class="row" style="height: 92%; margin: 0;">
-        <div class="col-2.5 bg-light border border-gray" style="border-top: none;">
-            <div class="card bg-light" style="border: none;">
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <div class="input-group input-group-sm">
-                            <input type="text" class="form-control form-control-sm" name="search" placeholder="Tìm kiếm" />
-                            <div class="input-group-append">
-                                <button type="button" class="btn bg-white btn-sm border border-gray">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <ul class="list-group ">
-                <li class="list-group-item bg-light" style="border-radius: 0;">
-                    <i class="fa-solid fa-plane-departure text-primary"></i>
-                    <a href="/tour" style="text-decoration: none; ">Tour</a>
-                </li>
-                <li class="list-group-item bg-light" style="border-radius: 0;">
-                    <i class="fa-sharp fa-solid fa-location-dot text-primary"></i>
-                    <a href="/province" style="text-decoration: none; ">Địa điểm</a>
-                </li>
-                <li class="list-group-item bg-light" style="border-radius: 0;">
-                    <i class="fa-solid fa-umbrella-beach text-primary"></i>
-                    <a href="/tourType" style="text-decoration: none; ">Chủ đề tour</a>
-                </li>
-            </ul>
-
-        </div>
+        <div th:replace="fragments/sideBarAdmin :: sidebar">...</div>
 
         <div class="col" style="border-top: none; box-sizing: border-box;" id="viewcontent">
             <h2 class="mt-3 pb-3 border-bottom mb-3" style="font-weight: 400;">Danh sách chủ đề tour</h2>
@@ -116,10 +62,10 @@
                     Danh sách chủ đề
                 </div>
                 <div class="card-body">
-                    <table class="table table-sm table-bordered table-striped" >
+                    <table class="table table-hover" >
                         <thead>
                         <tr>
-                            <th style="width: 10%">#</th>
+                            <th style="width: 10%">ID</th>
                             <th style="width: 70%">Tên chủ đề</th>
                             <th style="width: 20%">Hàng động</th>
                         </tr>

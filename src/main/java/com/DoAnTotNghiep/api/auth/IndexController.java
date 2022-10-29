@@ -14,4 +14,9 @@ public class IndexController {
     public void index(HttpServletResponse response) throws IOException {
         response.sendRedirect("/tourUser");
     }
+
+    @GetMapping("/contact")
+    public String contact(HttpServletResponse response) throws IOException {
+        return "ContactUs";
+    }
 }

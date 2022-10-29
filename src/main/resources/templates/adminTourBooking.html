@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/c7788420e7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container-fluid " style="height: 100vh; padding: 0;">
+    <div th:replace="fragments/headerAdmin :: header">...</div>
+
+    <div class="row" style="height: 92%; margin: 0;">
+        <div th:replace="fragments/sideBarAdmin :: sidebar">...</div>
+
+        <div class="col" style="border-top: none; box-sizing: border-box;" id="viewcontent">
+            <h2 class="mt-3 pb-3 border-bottom mb-3" style="font-weight: 400;">Danh sách đơn đặt tour</h2>
+
+            <div class="card">
+                <div class="card-header">
+                    Danh sách đơn đặt tour
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover" >
+                        <thead>
+                        <tr>
+                            <th style="width: 10%">ID</th>
+                            <th style="width: 15%">Tên khách hàng</th>
+                            <th style="width: 15%">Ngày khởi hành</th>
+                            <th style="width: 15%">Tên tour</th>
+                            <th style="width: 15%">Tổng tiền</th>
+                            <th style="width: 15%">Trạng thái</th>
+                            <th style="width: 15%">Hàng động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each ="tourBooking : ${tourBookings}">
+                            <td th:utext="${tourBooking.id}">...</td>
+                            <td th:utext="${tourBooking.customerName}">...</td>
+                            <td th:utext="${#dates.format(tourBooking.startDate, 'yyyy-MM-dd')}">...</td>
+                            <td th:utext="${tourBooking.tour.tourName}">...</td>
+                            <td th:utext="${tourBooking.totalPrice}">...</td>
+                            <td class="h5">
+                                <th:block th:switch="${tourBooking.bookingState.value}">
+                                    <div th:case="'0'">
+                                        <span class="badge badge-success">Chưa thanh toán</span>
+                                    </div>
+                                    <div th:case="'1'">
+                                        <span class="badge badge-danger">Đã hủy</span>
+                                    </div>
+                                    <div th:case="'2'">
+                                        <span class="badge badge-primary">Đã thanh toán</span>
+                                    </div>
+                                </th:block>
+
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#sua'+${tourBooking.id}">Sửa</button>
+
+                                <!-- Modal -->
+                                <div class="modal  fade bd-example-modal-lg"  th:id="'sua' + ${tourBooking.id}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" >Sửa đơn đặt tour</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="post" action="updateTourBooking" modelAttribute="tourBooking">
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="id" th:value="${tourBooking.id}">
+                                                    <input type="hidden" name="tourId" th:value="${tourBooking.tour.id}">
+                                                    <input type="hidden" name="usersId" th:value="${tourBooking.users.id}">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Tên tour</label>
+                                                            <input type="text" class="form-control" th:value="${tourBooking.tour.tourName}" readonly>
+                                                        </div>
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Tên khách hàng</label>
+                                                            <input type="text" class="form-control" th:value="${tourBooking.customerName}" readonly>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-12">
+                                                            <label>Nguời lớn (<span class="giave" th:text="${tourBooking.tour.priceAdult}"></span> VNĐ)</label>
+                                                            <input type="text" id="quantityNguoilon" class="form-control inputQuantity" th:value="${tourBooking.quantityAdult}" name="quantityAdult">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Trẻ em từ  5 đến 11 tuổi (<span class="giave" th:text="${tourBooking.tour.priceChild5To11}"></span> VNĐ)</label>
+                                                            <input type="text" class="form-control inputQuantity" th:value="${tourBooking.quantityChild5To11}" name="quantityChild5To11">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Trẻ em dưới 5 tuổi (<span class="giave" th:text="${tourBooking.tour.priceChild2To5}"></span> VNĐ)</label>
+                                                            <input type="text" class="form-control inputQuantity" th:value="${tourBooking.quantityChild2To5}" name="quantityChild2To5">
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label>Ngày khởi hành</label>
+                                                            <input type="date" class="form-control" name="startDateString" th:value="${#dates.format(tourBooking.startDate, 'yyyy-MM-dd')}">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label>Họ và tên</label>
+                                                            <input type="text" class="form-control" name="customerName" th:value="${tourBooking.customerName}">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label>Số điện thoại</label>
+                                                            <input type="text" class="form-control" name="customerPhone" th:value="${tourBooking.customerPhone}">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label>Email</label>
+                                                            <input type="text" class="form-control" name="customerEmail" th:value="${tourBooking.customerEmail}">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="col-sm-4">
+                                                        <select class="form-control" name="bookingState">
+                                                            <option value="PROCESSING" th:selected="${tourBooking.bookingState.value} == '0'">Chưa thanh toán</option>
+                                                            <option value="CANCELLED" th:selected="${tourBooking.bookingState.value} == '1'">Đã hủy</option>
+                                                            <option value="COMPLETED" th:selected="${tourBooking.bookingState.value} == '2'">Đã thanh toán</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                    <button type="submit" class="btn btn-primary">Sửa</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#xoa'+${tourBooking.id}">
+                                    Xóa
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" th:id="'xoa' + ${tourBooking.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="xoamodel">Xóa đơn đặt tour</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <form method="post" action="deleteTourBooking" modelAttribute="tourBooking">
+                                                <input type="hidden"  name="id" th:value="${tourBooking.id}">
+
+
+
+
+                                                <div class="modal-body">
+                                                    Bạn có chắc chắn muốn xóa đơn đặt tour này ?
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                    <button type="submit" class="btn btn-primary">Xóa</button>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

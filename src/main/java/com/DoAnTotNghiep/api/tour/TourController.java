@@ -1,6 +1,7 @@
 package com.DoAnTotNghiep.api.tour;
 
 import com.DoAnTotNghiep.core.auth.model.UserImpl;
+import com.DoAnTotNghiep.core.tour.domain.BookingState;
 import com.DoAnTotNghiep.core.tour.entity.Province;
 import com.DoAnTotNghiep.core.tour.entity.Tour;
 import com.DoAnTotNghiep.core.tour.entity.TourBooking;
@@ -157,10 +158,14 @@ public class TourController {
             UserImpl userImpl = (UserImpl) userDetails;
             tourBooking.setUsers(userService.findById(userImpl.getUsers().getId()));
 
+            tourBooking.setBookingState(BookingState.PROCESSING);
+
             tourBookingService.createTourBooking(tourBooking);
             return "Success";
         } catch (Exception e) {
             return "Error";
         }
     }
+
+
 }
