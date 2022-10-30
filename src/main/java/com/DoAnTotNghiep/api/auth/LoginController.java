@@ -9,9 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 public class LoginController {
@@ -28,7 +32,8 @@ public class LoginController {
     public String loginProcess(@RequestParam(name = "username") String username,
                                @RequestParam(name = "password") String password,
                                HttpServletResponse response,
-                               Model model) {
+                               HttpSession session,
+                               Model model) throws IOException {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername(username);
         loginRequest.setPassword(password);
@@ -41,11 +46,27 @@ public class LoginController {
             cookie.setPath("/");
             //cookie.setHttpOnly(true);
             //cookie.setSecure(true);
+//            session.setAttribute("username", username);
             response.addCookie(cookie);
+            model.addAttribute("ErrorMessage", "Đăng nhập thất bại");
+            response.sendRedirect("/");
+            return "forward:/";
         } catch (Exception e) {
             model.addAttribute("ErrorMessage", "Đăng nhập thất bại");
             return "login";
         }
-        return "index";
+
+    }
+
+    @GetMapping("/logout2")
+    public void logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+//        Cookie cookie = WebUtils.getCookie(request, "jwt");
+//        if (cookie != null) cookie.setMaxAge(0);
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        session.invalidate();
+        response.addCookie(cookie);
+        response.sendRedirect("/");
     }
 }

@@ -19,9 +19,7 @@
                     <div class="mb-3">
                         <input type="password" class="form-control" name="password" id="passwordID" placeholder="Mật khẩu"></input>
                         <div th:if="${ErrorMessage}" th:utext="${ErrorMessage}"
-                             style="color:red;font-style:italic;">
-
-                        </div>
+                             style="color:red;font-style:italic;"></div>
                     </div>
                     <div class="mb-3 d-grid gap-2">
                     <button class="btn btn-success btn-block">Đăng nhập</button>

@@ -64,5 +64,5 @@ public class Tour {
     private TravelAgency travelAgency;
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.REMOVE)
-    private List<TourBooking> tourBookings;
+    private List<TourDateBooking> tourDateBookings;
 }

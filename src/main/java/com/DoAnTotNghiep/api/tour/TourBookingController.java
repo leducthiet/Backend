@@ -49,11 +49,7 @@ public class TourBookingController {
                 (long) tourBooking.getQuantityChild2To5() * tour.getPriceChild2To5() +
                 (long) tourBooking.getQuantityChild5To11() * tour.getPriceChild5To11();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        tourBooking.setStartDate(dateFormat.parse(startDateString));
-
         tourBooking.setTotalPrice(totalPrice);
-        tourBooking.setTour(tour);
         tourBooking.setUsers(userService.findById(usersId));
 
         tourBookingService.updateTourBooking(tourBooking);

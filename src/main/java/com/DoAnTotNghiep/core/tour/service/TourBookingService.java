@@ -32,4 +32,8 @@ public class TourBookingService {
     public void deleteTourBooking(TourBooking tourBooking) {
         tourBookingRepository.deleteById(tourBooking.getId());
     }
+
+//    public int countCurrentPeopleByTourId(Long tourId) {
+//        return tourBookingRepository.countCurrentPeopleByTourId(tourId);
+//    }
 }

@@ -2,10 +2,7 @@ package com.DoAnTotNghiep.api.tour;
 
 import com.DoAnTotNghiep.core.auth.model.UserImpl;
 import com.DoAnTotNghiep.core.tour.domain.BookingState;
-import com.DoAnTotNghiep.core.tour.entity.Province;
-import com.DoAnTotNghiep.core.tour.entity.Tour;
-import com.DoAnTotNghiep.core.tour.entity.TourBooking;
-import com.DoAnTotNghiep.core.tour.entity.TourImage;
+import com.DoAnTotNghiep.core.tour.entity.*;
 import com.DoAnTotNghiep.core.tour.service.*;
 import com.DoAnTotNghiep.core.user.entity.Users;
 import com.DoAnTotNghiep.core.user.service.UserService;
@@ -24,8 +21,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class TourController {
@@ -47,17 +48,31 @@ public class TourController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    TourDateBookingService tourDateBookingService;
+
     @GetMapping("/tour")
     public String getTour(Model model) {
         model.addAttribute("tours", tourService.getAll());
         model.addAttribute("tourTypes", tourTypeService.getAll());
         model.addAttribute("provinces", provinceService.getAll());
+        List<String> tourDateBookings = new ArrayList<>();
+        for (Tour t : tourService.getAll()) {
+            StringBuilder temp = new StringBuilder();
+            for (TourDateBooking td : tourDateBookingService.getTourDateBookingByTourId(t.getId())) {
+                temp.append(DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
+                        .format(td.getDateBooking().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())).append(",");
+            }
+            tourDateBookings.add(String.valueOf(temp));
+        }
+        model.addAttribute("tourDateBookings", tourDateBookings);
         return "adminHome";
     }
 
     @GetMapping("/tourUser")
     public String getTourUser(Model model) {
         List<Province> provinces = provinceService.getAll();
+        model.addAttribute("tours", tourService.getAll());
         model.addAttribute("tours1", tourService.getTourByProvinceId(provinces.get(0).getId()));
         model.addAttribute("tours2", tourService.getTourByProvinceId(provinces.get(1).getId()));
         model.addAttribute("tours3", tourService.getTourByProvinceId(provinces.get(2).getId()));
@@ -73,7 +88,8 @@ public class TourController {
                            @RequestParam("thumbnail") MultipartFile file,
                            @RequestParam("images") MultipartFile[] images,
                            @RequestParam("tourType_id") Long tourType_id,
-                           @RequestParam("province_id") Long province_id) throws IOException {
+                           @RequestParam("province_id") Long province_id,
+                           @RequestParam("tourBookingDate") String tourBookingDate) throws IOException, ParseException {
         Path fileNameAndPath = Paths.get("src/main/resources/static/images", file.getOriginalFilename());
         Files.write(fileNameAndPath, file.getBytes());
 
@@ -81,6 +97,15 @@ public class TourController {
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
         Tour tourCreated = tourService.createTour(tour);
+
+        String[] tourBookingDates = tourBookingDate.split(",");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        for (String s : tourBookingDates) {
+            TourDateBooking tourDateBooking = new TourDateBooking();
+            tourDateBooking.setTour(tourCreated);
+            tourDateBooking.setDateBooking(dateFormat.parse(s));
+            tourDateBookingService.createTourDateBooking(tourDateBooking);
+        }
 
         if (images.length != 0) {
             for (MultipartFile image : images) {
@@ -106,7 +131,8 @@ public class TourController {
                            @ModelAttribute("tour") Tour tour,
                            @RequestParam("thumbnail") MultipartFile file,
                            @RequestParam("tourType_id") Long tourType_id,
-                           @RequestParam("province_id") Long province_id) throws IOException {
+                           @RequestParam("province_id") Long province_id,
+                           @RequestParam("tourBookingDate") String tourBookingDate) throws IOException, ParseException {
         if (!file.getOriginalFilename().equals("")) {
             Path fileNameAndPath = Paths.get("src/main/resources/static/images", file.getOriginalFilename());
             Files.write(fileNameAndPath, file.getBytes());
@@ -115,6 +141,19 @@ public class TourController {
         } else {
             tour.setThumbnailPath(tourService.findById(tour.getId()).getThumbnailPath());
         }
+
+        for (TourDateBooking t : tourDateBookingService.getTourDateBookingByTourId(tour.getId())) {
+            tourDateBookingService.deleteTourDateBooking(t);
+        }
+        String[] tourBookingDates = tourBookingDate.split(",");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        for (String s : tourBookingDates) {
+            TourDateBooking tourDateBooking = new TourDateBooking();
+            tourDateBooking.setTour(tourService.findById(tour.getId()));
+            tourDateBooking.setDateBooking(dateFormat.parse(s));
+            tourDateBookingService.createTourDateBooking(tourDateBooking);
+        }
+
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
         tourService.updateTour(tour);
@@ -135,28 +174,28 @@ public class TourController {
     public String tourDetail(@PathVariable(name = "id") Long tourId, Model model) {
         model.addAttribute("tour", tourService.findById(tourId));
         model.addAttribute("tourImages", tourImageService.getTourImageByTourId(tourId));
+        model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
         return "Detail";
     }
 
     @GetMapping("/tourOrder/{id}")
     public String tourOrder(@PathVariable(name = "id") Long tourId, Model model) {
         model.addAttribute("tour", tourService.findById(tourId));
+        model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
         return "Order";
     }
 
     @PostMapping("/submitOrder")
     public String submitOrder(Model model,
                               @ModelAttribute("tourBooking") TourBooking tourBooking,
-                              @RequestParam("startDateString") String startDateString,
+                              @RequestParam("tourDateBookingId") Long tourDateBookingId,
                               @RequestParam("tourId") Long tourId) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            tourBooking.setStartDate(dateFormat.parse(startDateString));
-            tourBooking.setTour(tourService.findById(tourId));
 
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             UserImpl userImpl = (UserImpl) userDetails;
             tourBooking.setUsers(userService.findById(userImpl.getUsers().getId()));
+            tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
 
             tourBooking.setBookingState(BookingState.PROCESSING);
 

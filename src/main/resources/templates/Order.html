@@ -26,6 +26,8 @@
                         <h5>Giá vé</h5>
                     </div>
                     <div class="card-body">
+                        <div th:if="${ErrorMessage}" th:utext="${ErrorMessage}"
+                             style="color:red;font-style:italic;"></div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>Nguời lớn (<span class="giave" th:text="${tour.priceAdult}"></span> VNĐ)</label>
@@ -57,10 +59,12 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Ngày khởi hành</label>
-                            <div class="col-sm-6">
-                                <input type="date" class="form-control" name="startDateString">
-                            </div>
+                                <label class="col-sm-2 col-form-label">Ngày khởi hành</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" name="tourDateBookingId">
+                                        <option th:each="tourDateBooking : ${tourDateBookings}" th:value="${tourDateBooking.id}" th:text="${#dates.format(tourDateBooking.dateBooking, 'yyyy-MM-dd')}"></option>
+                                    </select>
+                                </div>
                         </div>
 
                         <div class="form-group row">

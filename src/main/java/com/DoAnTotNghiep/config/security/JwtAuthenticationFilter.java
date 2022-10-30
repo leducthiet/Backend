@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -30,16 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        response.addHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
-        response.addHeader("Access-Control-Expose-Headers", "X-Total-Count");
+//        HttpSession session = request.getSession();
 
         Cookie[] cookies = request.getCookies();
-
-        //check
         if (cookies != null) {
             System.out.println(Arrays.stream(cookies)
                     .map(c -> c.getName() + "=" + c.getValue()).collect(Collectors.joining(", ")));
@@ -53,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (cookie != null) {
                 jwt = cookie.getValue();
             }
+//            jwt = (String) session.getAttribute("jwt");
             if (StringUtils.hasText(jwt)) {
                 jwtTokenProvider.validateToken(jwt);
                 Claims claims = jwtTokenProvider.getUserFromJWT(jwt);
@@ -62,6 +57,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         (userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                HttpSession session = request.getSession();
+                session.setAttribute("username", username);
             }
         } catch (Exception ex) {
             System.out.println("Không thành công khi xác thực người dùng");

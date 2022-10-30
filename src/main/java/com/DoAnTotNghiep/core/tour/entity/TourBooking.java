@@ -18,8 +18,6 @@ public class TourBooking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date startDate;
-
     private String customerName;
 
     private String customerPhone;
@@ -36,19 +34,15 @@ public class TourBooking {
 
     private Integer quantityChild5To11;
 
-    private Integer quantityBaby;
-
     private BookingState bookingState;
 
-    private Date dateBooking;
+    private Date dateCreate;
 
-    private Boolean isDelete;
-
-    private Boolean isPaid;
+    private Date dateUpdate;
 
     @ManyToOne
-    @JoinColumn(name = "tour_id")
-    private Tour tour;
+    @JoinColumn(name = "tour_date_booking_id")
+    private TourDateBooking tourDateBooking;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
