@@ -40,8 +40,8 @@
                         <tr th:each ="tourBooking : ${tourBookings}">
                             <td th:utext="${tourBooking.id}">...</td>
                             <td th:utext="${tourBooking.customerName}">...</td>
-                            <td th:utext="${#dates.format(tourBooking.startDate, 'yyyy-MM-dd')}">...</td>
-                            <td th:utext="${tourBooking.tour.tourName}">...</td>
+                            <td th:utext="${#dates.format(tourBooking.tourDateBooking.dateBooking, 'yyyy-MM-dd')}">...</td>
+                            <td th:utext="${tourBooking.tourDateBooking.tour.tourName}">...</td>
                             <td th:utext="${tourBooking.totalPrice}">...</td>
                             <td class="h5">
                                 <th:block th:switch="${tourBooking.bookingState.value}">
@@ -73,41 +73,39 @@
                                             <form method="post" action="updateTourBooking" modelAttribute="tourBooking">
                                                 <div class="modal-body">
                                                     <input type="hidden" name="id" th:value="${tourBooking.id}">
-                                                    <input type="hidden" name="tourId" th:value="${tourBooking.tour.id}">
                                                     <input type="hidden" name="usersId" th:value="${tourBooking.users.id}">
+                                                    <input type="hidden" name="tourId" th:value="${tourBooking.tourDateBooking.tour.id}">
+                                                    <input type="hidden" name="tourDateBookingId" th:value="${tourBooking.tourDateBooking.id}">
                                                     <div class="form-row">
                                                         <div class="form-group col-md-6">
                                                             <label>Tên tour</label>
-                                                            <input type="text" class="form-control" th:value="${tourBooking.tour.tourName}" readonly>
+                                                            <input type="text" class="form-control" th:value="${tourBooking.tourDateBooking.tour.tourName}" readonly>
                                                         </div>
+                                                        <div class=" form-group col-md-6">
+                                                            <label>Ngày khởi hành</label>
+                                                            <input type="date" class="form-control" th:value="${#dates.format(tourBooking.tourDateBooking.dateBooking, 'yyyy-MM-dd')}" readonly>
 
-                                                        <div class="form-group col-md-6">
-                                                            <label>Tên khách hàng</label>
-                                                            <input type="text" class="form-control" th:value="${tourBooking.customerName}" readonly>
                                                         </div>
 
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-12">
-                                                            <label>Nguời lớn (<span class="giave" th:text="${tourBooking.tour.priceAdult}"></span> VNĐ)</label>
+                                                            <label>Nguời lớn (<span class="giave" th:text="${tourBooking.tourDateBooking.tour.priceAdult}"></span> VNĐ)</label>
                                                             <input type="text" id="quantityNguoilon" class="form-control inputQuantity" th:value="${tourBooking.quantityAdult}" name="quantityAdult">
                                                         </div>
                                                         <div class="form-group col-md-12">
-                                                            <label>Trẻ em từ  5 đến 11 tuổi (<span class="giave" th:text="${tourBooking.tour.priceChild5To11}"></span> VNĐ)</label>
+                                                            <label>Trẻ em từ  5 đến 11 tuổi (<span class="giave" th:text="${tourBooking.tourDateBooking.tour.priceChild5To11}"></span> VNĐ)</label>
                                                             <input type="text" class="form-control inputQuantity" th:value="${tourBooking.quantityChild5To11}" name="quantityChild5To11">
                                                         </div>
                                                         <div class="form-group col-md-12">
-                                                            <label>Trẻ em dưới 5 tuổi (<span class="giave" th:text="${tourBooking.tour.priceChild2To5}"></span> VNĐ)</label>
+                                                            <label>Trẻ em dưới 5 tuổi (<span class="giave" th:text="${tourBooking.tourDateBooking.tour.priceChild2To5}"></span> VNĐ)</label>
                                                             <input type="text" class="form-control inputQuantity" th:value="${tourBooking.quantityChild2To5}" name="quantityChild2To5">
                                                         </div>
 
                                                     </div>
 
                                                     <div class="form-group row">
-                                                        <div class="col-sm-6">
-                                                            <label>Ngày khởi hành</label>
-                                                            <input type="date" class="form-control" name="startDateString" th:value="${#dates.format(tourBooking.startDate, 'yyyy-MM-dd')}">
-                                                        </div>
+
                                                         <div class="col-sm-6">
                                                             <label>Họ và tên</label>
                                                             <input type="text" class="form-control" name="customerName" th:value="${tourBooking.customerName}">

@@ -37,7 +37,7 @@
 
     <ul class="navbar-nav ml-auto d-flex justify-content-end align-items-center">
       <th:block th:if="${session.username}">
-        <a href="#" class="mr-3"><i class="fas fa-cart-plus text-light"></i></a>
+        <a href="/viewHistoryOrder" class="mr-3"><i class="fas fa-cart-plus text-light"></i></a>
         <span class="mr-3 text-light" th:text="@{'Welcome ' + ${session.username}}">John Doe</span>
         <li class="nav-item dropdown" style="display: inline; float: right;">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

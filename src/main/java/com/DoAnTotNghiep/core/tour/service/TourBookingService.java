@@ -33,7 +33,7 @@ public class TourBookingService {
         tourBookingRepository.deleteById(tourBooking.getId());
     }
 
-//    public int countCurrentPeopleByTourId(Long tourId) {
-//        return tourBookingRepository.countCurrentPeopleByTourId(tourId);
-//    }
+    public List<TourBooking> getTourBookingByUserId(Long userId) {
+        return tourBookingRepository.getTourBookingByUserId(userId);
+    }
 }

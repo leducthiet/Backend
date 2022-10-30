@@ -19,15 +19,17 @@ public class TravelAgency {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "nvarchar(255)")
     private String name;
 
+    @Column(columnDefinition = "nvarchar(255)")
     private String address;
 
     private String phone;
 
     private String email;
 
-    private Status status;
+    private boolean isActive;
 
     private String description;
 
@@ -38,6 +40,8 @@ public class TravelAgency {
     private Date dateCreate;
 
     private String businessLicense;
+
+    private Integer type;
 
     @OneToMany(mappedBy = "travelAgency", cascade = CascadeType.REMOVE)
     private List<Tour> tours;

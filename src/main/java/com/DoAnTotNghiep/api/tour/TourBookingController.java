@@ -4,6 +4,7 @@ import com.DoAnTotNghiep.core.tour.entity.Province;
 import com.DoAnTotNghiep.core.tour.entity.Tour;
 import com.DoAnTotNghiep.core.tour.entity.TourBooking;
 import com.DoAnTotNghiep.core.tour.service.TourBookingService;
+import com.DoAnTotNghiep.core.tour.service.TourDateBookingService;
 import com.DoAnTotNghiep.core.tour.service.TourService;
 import com.DoAnTotNghiep.core.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class TourBookingController {
     TourBookingService tourBookingService;
 
     @Autowired
+    TourDateBookingService tourDateBookingService;
+
+    @Autowired
     TourService tourService;
 
     @Autowired
@@ -41,7 +45,7 @@ public class TourBookingController {
                                   HttpServletResponse response,
                                   @RequestParam("tourId") Long tourId,
                                   @RequestParam("usersId") Long usersId,
-                                  @RequestParam("startDateString") String startDateString,
+                                  @RequestParam("tourDateBookingId") Long tourDateBookingId,
                                   @ModelAttribute("tourBooking") TourBooking tourBooking) throws IOException, ParseException {
         Tour tour = tourService.findById(tourId);
         Long totalPrice =
@@ -51,6 +55,7 @@ public class TourBookingController {
 
         tourBooking.setTotalPrice(totalPrice);
         tourBooking.setUsers(userService.findById(usersId));
+        tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
 
         tourBookingService.updateTourBooking(tourBooking);
 
