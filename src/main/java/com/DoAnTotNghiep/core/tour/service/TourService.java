@@ -36,4 +36,8 @@ public class TourService {
     public List<Tour> getTourByProvinceId(Long provinceId) {
         return tourRepository.getTourByProvinceId(provinceId);
     }
+
+    public List<Tour> getTourByTravelAgencyId(Long travelAgencyId) {
+        return tourRepository.getTourByTravelAgencyId(travelAgencyId);
+    }
 }

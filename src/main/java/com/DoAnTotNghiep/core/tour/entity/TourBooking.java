@@ -40,6 +40,9 @@ public class TourBooking {
 
     private Date dateUpdate;
 
+    @Column(unique=true)
+    private String paymentId;
+
     @ManyToOne
     @JoinColumn(name = "tour_date_booking_id")
     private TourDateBooking tourDateBooking;

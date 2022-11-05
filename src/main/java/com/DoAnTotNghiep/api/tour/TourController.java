@@ -1,11 +1,15 @@
 package com.DoAnTotNghiep.api.tour;
 
 import com.DoAnTotNghiep.core.auth.model.UserImpl;
+import com.DoAnTotNghiep.core.paypal.PaypalService;
 import com.DoAnTotNghiep.core.tour.domain.BookingState;
 import com.DoAnTotNghiep.core.tour.entity.*;
 import com.DoAnTotNghiep.core.tour.service.*;
 import com.DoAnTotNghiep.core.user.entity.Users;
 import com.DoAnTotNghiep.core.user.service.UserService;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +19,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,6 +59,17 @@ public class TourController {
 
     @Autowired
     TourDateBookingService tourDateBookingService;
+
+    @Autowired
+    PaypalService paypalService;
+
+    @Autowired
+    TravelAgencyService travelAgencyService;
+
+    @GetMapping("/admin")
+    public void adminPage(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/tour");
+    }
 
     @GetMapping("/tour")
     public String getTour(Model model) {
@@ -87,6 +107,7 @@ public class TourController {
                            @ModelAttribute("tour") Tour tour,
                            @RequestParam("thumbnail") MultipartFile file,
                            @RequestParam("images") MultipartFile[] images,
+                           @RequestParam("travelAgencyId") Long travelAgencyId,
                            @RequestParam("tourType_id") Long tourType_id,
                            @RequestParam("province_id") Long province_id,
                            @RequestParam("tourBookingDate") String tourBookingDate) throws IOException, ParseException {
@@ -96,6 +117,7 @@ public class TourController {
         tour.setThumbnailPath(file.getOriginalFilename());
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
+        tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
         Tour tourCreated = tourService.createTour(tour);
 
         String[] tourBookingDates = tourBookingDate.split(",");
@@ -122,7 +144,7 @@ public class TourController {
             }
         }
 
-        response.sendRedirect("/tour");
+        response.sendRedirect("/tourOfTravelAgency?travelAgencyId=" + travelAgencyId);
     }
 
     @PostMapping("/updateTour")
@@ -130,6 +152,7 @@ public class TourController {
                            HttpServletResponse response,
                            @ModelAttribute("tour") Tour tour,
                            @RequestParam("thumbnail") MultipartFile file,
+                           @RequestParam("travelAgencyId") Long travelAgencyId,
                            @RequestParam("tourType_id") Long tourType_id,
                            @RequestParam("province_id") Long province_id,
                            @RequestParam("tourBookingDate") String tourBookingDate) throws IOException, ParseException {
@@ -156,6 +179,7 @@ public class TourController {
 
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
+        tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
         tourService.updateTour(tour);
         response.sendRedirect("/tour");
     }
@@ -189,6 +213,7 @@ public class TourController {
     public String submitOrder(Model model,
                               @ModelAttribute("tourBooking") TourBooking tourBooking,
                               @RequestParam("tourDateBookingId") Long tourDateBookingId,
+                              @RequestParam("paymentMethod") Long paymentMethod,
                               @RequestParam("tourId") Long tourId) {
         try {
 
@@ -198,12 +223,80 @@ public class TourController {
             tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
 
             tourBooking.setBookingState(BookingState.PROCESSING);
+            Long tourBookingId = tourBookingService.createTourBooking(tourBooking).getId();
 
-            tourBookingService.createTourBooking(tourBooking);
+            String url_str = "https://api.exchangerate.host/latest?base=VND&symbols=USD&amount=" + tourBooking.getTotalPrice();
+
+            URL url = new URL(url_str);
+            HttpURLConnection request = (HttpURLConnection) url.openConnection();
+            request.connect();
+
+            JsonParser jp = new JsonParser();
+            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+            JsonObject jsonObj = root.getAsJsonObject();
+
+            JsonObject jsonObjRate = jsonObj.get("rates").getAsJsonObject();
+            String value = jsonObjRate.get("USD").getAsString();
+            System.out.println(value);
+
+
+            if (paymentMethod == 2) {
+                return "forward:/pay?price=" + value + "&tourBookingId=" + tourBookingId;
+            }
+
             return "Success";
         } catch (Exception e) {
+            e.printStackTrace();
             return "Error";
         }
+    }
+
+    @PostMapping("/updateTourOfTravelAgency")
+    public void updateTourOfTravelAgency(Model model,
+                           HttpServletResponse response,
+                           @ModelAttribute("tour") Tour tour,
+                           @RequestParam("thumbnail") MultipartFile file,
+                           @RequestParam("travelAgencyId") Long travelAgencyId,
+                           @RequestParam("tourType_id") Long tourType_id,
+                           @RequestParam("province_id") Long province_id,
+                           @RequestParam("tourBookingDate") String tourBookingDate) throws IOException, ParseException {
+        if (!file.getOriginalFilename().equals("")) {
+            Path fileNameAndPath = Paths.get("src/main/resources/static/images", file.getOriginalFilename());
+            Files.write(fileNameAndPath, file.getBytes());
+
+            tour.setThumbnailPath(file.getOriginalFilename());
+        } else {
+            tour.setThumbnailPath(tourService.findById(tour.getId()).getThumbnailPath());
+        }
+
+        for (TourDateBooking t : tourDateBookingService.getTourDateBookingByTourId(tour.getId())) {
+            tourDateBookingService.deleteTourDateBooking(t);
+        }
+        String[] tourBookingDates = tourBookingDate.split(",");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        for (String s : tourBookingDates) {
+            TourDateBooking tourDateBooking = new TourDateBooking();
+            tourDateBooking.setTour(tourService.findById(tour.getId()));
+            tourDateBooking.setDateBooking(dateFormat.parse(s));
+            tourDateBookingService.createTourDateBooking(tourDateBooking);
+        }
+
+        tour.setTourType(tourTypeService.findById(tourType_id));
+        tour.setProvince(provinceService.findById(province_id));
+        tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        tourService.updateTour(tour);
+        response.sendRedirect("/tourOfTravelAgency?travelAgencyId=" + travelAgencyId);
+    }
+
+    @PostMapping("/deleteTourOfTravelAgency")
+    public void deleteTourOfTravelAgency(Model model,
+                           HttpServletResponse response,
+                           @RequestParam("travelAgencyId") Long travelAgencyId,
+                           @ModelAttribute("tour") Tour tour) throws IOException {
+        tourService.deleteTour(tour);
+
+
+        response.sendRedirect("/tourOfTravelAgency?travelAgencyId=" + travelAgencyId);
     }
 
 

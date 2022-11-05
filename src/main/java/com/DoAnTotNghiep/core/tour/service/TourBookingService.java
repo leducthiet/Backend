@@ -21,8 +21,8 @@ public class TourBookingService {
         return tourBookingRepository.findById(id).orElseThrow(BadRequestException::new);
     }
 
-    public void createTourBooking(TourBooking tourBooking) {
-        tourBookingRepository.save(tourBooking);
+    public TourBooking createTourBooking(TourBooking tourBooking) {
+        return tourBookingRepository.saveAndFlush(tourBooking);
     }
 
     public void updateTourBooking(TourBooking tourBooking) {
@@ -35,5 +35,13 @@ public class TourBookingService {
 
     public List<TourBooking> getTourBookingByUserId(Long userId) {
         return tourBookingRepository.getTourBookingByUserId(userId);
+    }
+
+    public TourBooking getTourBookingByPaymentId(String paymentId) {
+        return tourBookingRepository.getTourBookingByPaymentId(paymentId);
+    }
+
+    public List<TourBooking> getTourBookingByTourId(Long tourId) {
+        return tourBookingRepository.getTourBookingByTourId(tourId);
     }
 }

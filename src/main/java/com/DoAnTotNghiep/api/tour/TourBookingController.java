@@ -71,4 +71,11 @@ public class TourBookingController {
 
         response.sendRedirect("/tourBooking");
     }
+
+    @GetMapping("/tourBookingOfTour")
+    public String getTourBookingOfTour(Model model,
+                                       @RequestParam("tourId") Long tourId) {
+        model.addAttribute("tourBookings", tourBookingService.getTourBookingByTourId(tourId));
+        return "adminTourBooking";
+    }
 }

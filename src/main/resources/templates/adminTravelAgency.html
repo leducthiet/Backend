@@ -101,6 +101,9 @@
               <td th:utext="${travelAgency.name}">...</td>
               <td th:utext="${travelAgency.address}">...</td>
               <td>
+
+                <a th:href="@{'tourOfTravelAgency?travelAgencyId=' + ${travelAgency.id}}" class="btn btn-info text-light mb-1">Xem tour</a><br>
+
                 <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#sua'+${travelAgency.id}">Sửa</button>
 
                 <!-- Modal -->
@@ -198,6 +201,8 @@
                     </div>
                   </div>
                 </div>
+
+
               </td>
             </tr>
 
