@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -50,4 +51,7 @@ public class TourBooking {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
+
+    @OneToOne(mappedBy = "tourBooking", cascade = CascadeType.REMOVE)
+    private TourFeedBack tourFeedBack;
 }

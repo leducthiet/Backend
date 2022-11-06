@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/c7788420e7.js" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header">...</div>
+
+<div class="container mt-3 pt-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm h3">
+                    <i class="fa-solid fa-message text-primary"></i>
+                    <span th:utext="@{'Đánh giá tour (' + ${tour.tourName} + ')'}"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <form method="post" action="tourFeedBack" modelAttribute="feedBack">
+                <input type="hidden"  name="tourBookingId" th:value="${tourBookingId}">
+                <input type="hidden"  name="usersId" th:value="${usersId}">
+                <div class="form-group">
+                    <label for="formControlRange">Điểm đánh giá <span class="h3 text-primary" id="rangeval">5<!-- Default value --></span></label>
+                    <input type="range" min="0" max="10" name="rating" class="form-control-range" id="formControlRange" onInput="$('#rangeval').html($(this).val())">
+
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Chia sẻ về trải nghiệm</label>
+                    <textarea class="form-control" name="comment" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Gửi</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

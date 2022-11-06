@@ -66,6 +66,9 @@ public class TourController {
     @Autowired
     TravelAgencyService travelAgencyService;
 
+    @Autowired
+    TourFeedBackService tourFeedBackService;
+
     @GetMapping("/admin")
     public void adminPage(HttpServletResponse response) throws IOException {
         response.sendRedirect("/tour");
@@ -199,6 +202,7 @@ public class TourController {
         model.addAttribute("tour", tourService.findById(tourId));
         model.addAttribute("tourImages", tourImageService.getTourImageByTourId(tourId));
         model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
+        model.addAttribute("tourFeedBacks", tourFeedBackService.getTourFeedBackByTourId(tourId));
         return "Detail";
     }
 
@@ -298,6 +302,4 @@ public class TourController {
 
         response.sendRedirect("/tourOfTravelAgency?travelAgencyId=" + travelAgencyId);
     }
-
-
 }

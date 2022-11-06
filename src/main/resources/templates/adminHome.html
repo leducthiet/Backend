@@ -571,6 +571,8 @@
               <td th:utext="${tour.tourName}">...</td>
               <td> <img class="img-thumbnail" th:src="@{'api/get-image?url=' + ${tour.thumbnailPath}}"/> </td>
               <td>
+                <a th:href="@{'tourBookingOfTour?tourId=' + ${tour.id}}" class="btn btn-info text-light mb-1">Xem đơn đặt tour</a><br>
+
                 <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#sua'+${tour.id}">Sửa</button>
 
                 <div class="modal fade bd-example-modal-lg" th:id="'sua' + ${tour.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -247,7 +247,12 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                <th:block th:switch="${tourBooking.bookingState.value}">
+                                    <div th:case="'2'">
+                                        <a th:unless="${tourBooking.tourFeedBack}" th:href="@{'showFeedBack?tourBookingId=' + ${tourBooking.id}}" class="btn btn-info text-light mt-1">FeedBack</a>
+                                        <a th:if="${tourBooking.tourFeedBack}" th:href="@{'showUpdateFeedBack?tourBookingId=' + ${tourBooking.id}}" class="btn btn-info text-light mt-1">Chỉnh sửa FeedBack</a>
+                                    </div>
+                                </th:block>
 
                             </td>
                         </tr>

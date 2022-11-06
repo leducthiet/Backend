@@ -72,10 +72,44 @@ public class TourBookingController {
         response.sendRedirect("/tourBooking");
     }
 
+    @PostMapping("/updateTourBookingOfTour")
+    public void updateTourBookingOfTour(Model model,
+                                  HttpServletResponse response,
+                                  @RequestParam("tourId") Long tourId,
+                                  @RequestParam("usersId") Long usersId,
+                                  @RequestParam("tourDateBookingId") Long tourDateBookingId,
+                                  @ModelAttribute("tourBooking") TourBooking tourBooking) throws IOException, ParseException {
+        Tour tour = tourService.findById(tourId);
+        Long totalPrice =
+                (long) tourBooking.getQuantityAdult() * tour.getPriceAdult() +
+                        (long) tourBooking.getQuantityChild2To5() * tour.getPriceChild2To5() +
+                        (long) tourBooking.getQuantityChild5To11() * tour.getPriceChild5To11();
+
+        tourBooking.setTotalPrice(totalPrice);
+        tourBooking.setUsers(userService.findById(usersId));
+        tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
+
+        tourBookingService.updateTourBooking(tourBooking);
+
+        response.sendRedirect("/tourBookingOfTour?tourId=" + tourId);
+    }
+
+    @PostMapping("/deleteTourBookingOfTour")
+    public void deleteTourBookingOfTour(Model model,
+                                    HttpServletResponse response,
+                                    @RequestParam("tourId") Long tourId,
+                                    @ModelAttribute("tourBooking") TourBooking tourBooking) throws IOException {
+        tourBookingService.deleteTourBooking(tourBooking);
+
+
+        response.sendRedirect("/tourBookingOfTour?tourId=" + tourId);
+    }
+
     @GetMapping("/tourBookingOfTour")
     public String getTourBookingOfTour(Model model,
                                        @RequestParam("tourId") Long tourId) {
         model.addAttribute("tourBookings", tourBookingService.getTourBookingByTourId(tourId));
-        return "adminTourBooking";
+        model.addAttribute("tourOfTourBooking", tourService.findById(tourId));
+        return "adminTourBookingOfTour";
     }
 }
