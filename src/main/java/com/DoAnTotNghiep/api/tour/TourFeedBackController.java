@@ -130,4 +130,48 @@ public class TourFeedBackController {
 
         response.sendRedirect("/tourFeedBack");
     }
+
+    @GetMapping("/tourFeedBackOfTour")
+    public String tourFeedBackOfTour(@RequestParam("tourId") Long tourId,
+                                     Model model) {
+        model.addAttribute("feedBacks", tourFeedBackService.getTourFeedBackByTourId(tourId));
+        model.addAttribute("tour", tourService.findById(tourId));
+        return "adminTourFeedBackOfTour";
+    }
+
+    @PostMapping("/hideTourFeedBackOfTour")
+    public void hideTourFeedBackOfTour(Model model,
+                                 HttpServletResponse response,
+                                 @RequestParam("tourId") Long tourId,
+                                 @ModelAttribute("feedBack") TourFeedBack tourFeedBack) throws IOException {
+        TourFeedBack tourFeedBackDB = tourFeedBackService.findById(tourFeedBack.getId());
+        tourFeedBackDB.setIsHidden(true);
+
+        tourFeedBackService.updateTourFeedBack(tourFeedBackDB);
+
+        response.sendRedirect("/tourFeedBackOfTour?tourId=" + tourId);
+    }
+
+    @PostMapping("/activeTourFeedBackOfTour")
+    public void activeTourFeedBackOfTour(Model model,
+                                   HttpServletResponse response,
+                                   @RequestParam("tourId") Long tourId,
+                                   @ModelAttribute("feedBack") TourFeedBack tourFeedBack) throws IOException {
+        TourFeedBack tourFeedBackDB = tourFeedBackService.findById(tourFeedBack.getId());
+        tourFeedBackDB.setIsHidden(false);
+
+        tourFeedBackService.updateTourFeedBack(tourFeedBackDB);
+
+        response.sendRedirect("/tourFeedBackOfTour?tourId=" + tourId);
+    }
+
+    @PostMapping("/deleteTourFeedBackOfTour")
+    public void deleteTourFeedBackOfTour(Model model,
+                                   HttpServletResponse response,
+                                   @RequestParam("tourId") Long tourId,
+                                   @ModelAttribute("feedBack") TourFeedBack tourFeedBack) throws IOException {
+        tourFeedBackService.deleteTourFeedBack(tourFeedBack);
+
+        response.sendRedirect("/tourFeedBackOfTour?tourId=" + tourId);
+    }
 }

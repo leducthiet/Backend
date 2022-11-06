@@ -572,6 +572,7 @@
               <td> <img class="img-thumbnail" th:src="@{'api/get-image?url=' + ${tour.thumbnailPath}}"/> </td>
               <td>
                 <a th:href="@{'tourBookingOfTour?tourId=' + ${tour.id}}" class="btn btn-info text-light mb-1">Xem đơn đặt tour</a><br>
+                <a th:href="@{'tourFeedBackOfTour?tourId=' + ${tour.id}}" class="btn btn-primary text-light mb-1">Xem phản hồi từ khách hàng</a><br>
 
                 <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#sua'+${tour.id}">Sửa</button>
 
