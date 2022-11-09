@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -22,5 +24,17 @@ public class UserService {
 
     public Users findById(Long id) {
         return userRepository.findById(id).orElseThrow(BadRequestException::new);
+    }
+
+    public List<Users> getAll() {
+        return userRepository.findAll();
+    }
+
+    public void updateUsers(Users users) {
+        userRepository.save(users);
+    }
+
+    public void deleteUsers(Users users) {
+        userRepository.deleteById(users.getId());
     }
 }

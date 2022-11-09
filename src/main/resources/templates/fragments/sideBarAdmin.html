@@ -14,20 +14,7 @@
 <body>
 
 <div class="col-2.5 bg-light border border-gray" style="border-top: none;" th:fragment="sidebar">
-    <div class="card bg-light" style="border: none;">
-        <div class="card-body">
-            <div class="form-group" style="margin-bottom: 0;">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control form-control-sm" name="search" placeholder="Tìm kiếm" />
-                    <div class="input-group-append">
-                        <a th:href="@{__${#httpServletRequest.requestURI}__/search}" type="button" class="btn bg-white btn-sm border border-gray">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <ul class="list-group ">
         <li class="list-group-item bg-light" style="border-radius: 0;">
             <i class="fa-solid fa-clipboard text-primary"></i>
@@ -56,6 +43,10 @@
         <li class="list-group-item bg-light" style="border-radius: 0;">
             <i class="fa-solid fa-message text-primary"></i>
             <a href="/tourFeedBack" style="text-decoration: none; ">Phản hồi từ khách hàng</a>
+        </li>
+        <li class="list-group-item bg-light" style="border-radius: 0;">
+            <i class="fa-solid fa-computer text-primary"></i>
+            <a href="/account" style="text-decoration: none; ">Tài khoản</a>
         </li>
     </ul>
 
