@@ -29,6 +29,11 @@
 <body>
   <div th:replace="fragments/header :: header">...</div>
 
+  <form>
+    <input type="hidden" id="lng" name="lng" th:value="${tour.lng}">
+    <input type="hidden" id="lat" name="lat" th:value="${tour.lat}">
+  </form>
+
   <div class="container mt-3 pt-5">
     <div class="row">
       <div class="col-8">
@@ -195,28 +200,23 @@
 
   <script>
       mapboxgl.accessToken = 'pk.eyJ1IjoidGhpZXQ2bXVpIiwiYSI6ImNsYTdqOXE1MjAzZjczb2xpd2Iwc3RmY2sifQ.E-U45YvxdBz-ZnMrV5j9xw';
+      const lng = document.getElementById("lng").value;
+      const lat = document.getElementById("lat").value;
       const map = new mapboxgl.Map({
           container: 'map', // container ID
           // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
           style: 'mapbox://styles/mapbox/streets-v11', // style URL
-          center: [108.21, 16.06], // starting position [lng, lat]
+          center: [lng, lat], // starting position [lng, lat]
           zoom: 9, // starting zoom
           projection: 'globe' // display the map as a 3D globe
       });
 
       const marker1 = new mapboxgl.Marker()
-      .setLngLat([108.21, 16.06])
+      .setLngLat([lng, lat])
       .addTo(map);
 
       map.on('style.load', () => {
           map.setFog({}); // Set the default atmosphere style
-          map.on('click', function(e) {
-            var coordinates = e.lngLat;
-            new mapboxgl.Popup()
-              .setLngLat(coordinates)
-              .setHTML('you clicked here: <br/>' + coordinates)
-              .addTo(map);
-  });
       });
 
       map.on('load', () => {

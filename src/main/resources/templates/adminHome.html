@@ -19,6 +19,7 @@
   </script>
 
   <style>
+  #map0 { position: absolute; top: 0; bottom: 0; width: 100%; }
         .datepicker {
             padding: 4px;
             -webkit-border-radius: 4px;
@@ -540,6 +541,9 @@
         }
     </style>
 
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+
 </head>
 <body>
 <div class="container-fluid " style="height: 100vh; padding: 0;">
@@ -550,6 +554,10 @@
 
     <div class="col" style="border-top: none; box-sizing: border-box;" id="viewcontent">
       <h2 class="mt-3 pb-3 border-bottom mb-3" style="font-weight: 400;">Danh sách Tour</h2>
+
+      <form>
+        <input type="hidden" id="sizeOfList" th:value="${#lists.size(tours)}">
+      </form>
 
       <div class="card">
         <div th:replace="fragments/cardHeader :: cardHeader">...</div>
@@ -674,6 +682,32 @@
                                    placeholder="Chọn ngày khởi hành" required th:value="${tourDateBookings[iter.index]}">
                           </div>
 
+                          <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+                          <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+                          <div class="form-group">
+                            <label>Bản đồ</label>
+                            <div class="card mt-3">
+                              <div class="card-body" style="min-height:350px; position:relative;" >
+                                <div th:id="'map' + ${iter.index}"></div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <input type="text" class="form-control" name="lng" th:id="'lng' + ${iter.index}" th:value="${tour.lng}">
+                            </div>
+
+                            <div class="form-group col-md-4">
+                              <input type="text" class="form-control" name="lat" th:id="'lat' + ${iter.index}" id="lat" th:value="${tour.lat}">
+                            </div>
+
+
+                          </div>
+
+
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -740,5 +774,70 @@
         });
   //# sourceURL=pen.js
 </script>
+
+<script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoidGhpZXQ2bXVpIiwiYSI6ImNsYTdqOXE1MjAzZjczb2xpd2Iwc3RmY2sifQ.E-U45YvxdBz-ZnMrV5j9xw';
+
+      const size = document.getElementById("sizeOfList").value;
+
+      for (let i = 0; i < size; i++) {
+        let name = 'map' + i;
+        let lngName = 'lng' + i;
+        let latName = 'lat' + i;
+
+        const lng = document.getElementById(lngName).value;
+        const lat = document.getElementById(latName).value;
+
+        const element = document.getElementById(name);
+        element.style.position = "absolute";
+        element.style.top = "0";
+        element.style.bottom = "0";
+        element.style.width = "100%";
+
+         const map = new mapboxgl.Map({
+            container: name, // container ID
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: [lng, lat], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+        });
+
+        const marker1 = new mapboxgl.Marker()
+        .setLngLat([lng, lat])
+        .addTo(map);
+
+        map.addControl(
+        new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl
+        })
+        );
+
+
+        map.on('style.load', () => {
+            map.setFog({}); // Set the default atmosphere style
+            map.on('click', function(e) {
+              var coordinates = e.lngLat;
+
+            document.getElementById(lngName).value = coordinates.lng
+            document.getElementById(latName).value = coordinates.lat
+
+              new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML('Tọa độ : <br/>' + coordinates)
+                .addTo(map);
+
+            });
+        });
+
+        map.on('load', () => {
+             map.resize();
+        });
+      }
+
+
+
+
+  </script>
 </body>
 </html>

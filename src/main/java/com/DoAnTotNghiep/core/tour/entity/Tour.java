@@ -48,6 +48,12 @@ public class Tour {
 
     private String thumbnailPath;
 
+    @Builder.Default
+    private String lng = "108.21";
+
+    @Builder.Default
+    private String lat = "16.06";
+
     @ManyToOne
     @JoinColumn(name = "tourType_id")
     private TourType tourType;
