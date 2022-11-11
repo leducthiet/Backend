@@ -545,6 +545,11 @@
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
 
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+
 </head>
 <body>
 <div class="container-fluid " style="height: 100vh; padding: 0;">
@@ -699,7 +704,7 @@
           Danh sách Tour
         </div>
         <div class="card-body">
-          <table class="table table-hover" >
+          <table id="accountTable" class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
               <th style="width: 10%">ID</th>
@@ -897,7 +902,6 @@
   </div>
 
 </div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 <script id="rendered-js">
         $('.date').datepicker({
@@ -1004,5 +1008,17 @@
 
 
   </script>
+
+<script>
+    $(document).ready(function () {
+        $('#accountTable').DataTable({
+            lengthMenu: [
+                [2, 5, 10, -1],
+                [2, 5, 10, 'All'],
+            ],
+        });
+    });
+</script>
+
 </body>
 </html>
