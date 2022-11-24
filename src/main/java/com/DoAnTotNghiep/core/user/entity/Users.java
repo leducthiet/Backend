@@ -3,6 +3,7 @@ package com.DoAnTotNghiep.core.user.entity;
 import com.DoAnTotNghiep.core.hotel.entity.RoomBooking;
 import com.DoAnTotNghiep.core.tour.entity.TourBooking;
 import com.DoAnTotNghiep.core.tour.entity.TourFeedBack;
+import com.DoAnTotNghiep.core.tour.entity.TravelAgency;
 import com.DoAnTotNghiep.core.user.domain.Role;
 import lombok.*;
 
@@ -49,4 +50,8 @@ public class Users {
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
     private List<TourFeedBack> tourFeedBacks;
+
+    @ManyToOne
+    @JoinColumn(name = "travelAgency_id")
+    private TravelAgency travelAgency;
 }

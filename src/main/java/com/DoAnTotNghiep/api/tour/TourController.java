@@ -71,7 +71,7 @@ public class TourController {
 
     @GetMapping("/admin")
     public void adminPage(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/tour");
+        response.sendRedirect("/dashboard");
     }
 
     @GetMapping("/tour")

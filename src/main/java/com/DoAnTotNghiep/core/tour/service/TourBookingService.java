@@ -6,6 +6,8 @@ import com.DoAnTotNghiep.core.tour.repository.TourBookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +24,7 @@ public class TourBookingService {
     }
 
     public TourBooking createTourBooking(TourBooking tourBooking) {
+        tourBooking.setDateCreate(new Date());
         return tourBookingRepository.saveAndFlush(tourBooking);
     }
 
@@ -43,5 +46,32 @@ public class TourBookingService {
 
     public List<TourBooking> getTourBookingByTourId(Long tourId) {
         return tourBookingRepository.getTourBookingByTourId(tourId);
+    }
+
+    public Integer getPercentTourBooking() {
+        Date today = new Date();
+        Long presentIncome = tourBookingRepository.getIncomeByMonth(today.getMonth() + 1);
+        Long previousIncome = tourBookingRepository.getIncomeByMonth(today.getMonth());
+        return Math.toIntExact((presentIncome * 100) / previousIncome) - 100;
+    }
+
+    public Integer getPercentNumberTourBooking() {
+        Date today = new Date();
+        Long presentNumber = tourBookingRepository.getNumberOrderByMonth(today.getMonth() + 1);
+        Long previousNumber = tourBookingRepository.getNumberOrderByMonth(today.getMonth());
+        return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
+    }
+
+    public List<Long> getIncomeThisYear() {
+        List<Long> incomes = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            Long income = tourBookingRepository.getIncomeByMonth(i);
+            if (income == null) {
+                incomes.add(0L);
+            } else {
+                incomes.add(income);
+            }
+        }
+        return incomes;
     }
 }

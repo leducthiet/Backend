@@ -128,7 +128,7 @@
                                     <div th:case="'2'">
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-primary mt-1" data-toggle="modal" th:attr="data-target='#role'+${account.id}">
-                                            Ủy quyền admin
+                                            Ủy quyền
                                         </button>
 
                                         <!-- Modal -->
@@ -136,22 +136,43 @@
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Ủy quyền admin</h5>
+                                                        <h5 class="modal-title">Ủy quyền</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
 
-                                                    <form method="post" action="setRoleAdmin" modelAttribute="account">
+                                                    <form method="post" action="setRole" modelAttribute="account">
                                                         <input type="hidden"  name="id" th:value="${account.id}">
 
-
-
-
                                                         <div class="modal-body">
-                                                            Bạn có chắc chắn muốn ủy quyền admin cho tài khoản này ?
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio" name="roleSystem" id="exampleRadios1" value="1" checked>
+                                                                        <label class="form-check-label" for="exampleRadios1">
+                                                                            Quản lý
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="travelAgency_id">
+                                                                        <option th:each="travelAgency : ${travelAgencies}" th:value="${travelAgency.id}" th:text="${travelAgency.name}"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="roleSystem" id="exampleRadios2" value="0">
+                                                                <label class="form-check-label" for="exampleRadios2">
+                                                                    Quản trị viên
+                                                                </label>
+                                                            </div>
 
                                                         </div>
+
+
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                                                             <button type="submit" class="btn btn-primary">OK</button>
@@ -219,15 +240,6 @@
                         </tr>
 
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th style="width: 10%">ID</th>
-                            <th style="width: 20%">Tên đăng nhập</th>
-                            <th style="width: 30%">Email</th>
-                            <th style="width: 20%">Vai trò</th>
-                            <th style="width: 20%">Hàng động</th>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

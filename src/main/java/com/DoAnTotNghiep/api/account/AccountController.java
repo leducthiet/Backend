@@ -1,5 +1,6 @@
 package com.DoAnTotNghiep.api.account;
 
+import com.DoAnTotNghiep.core.tour.service.TravelAgencyService;
 import com.DoAnTotNghiep.core.user.domain.Role;
 import com.DoAnTotNghiep.core.user.entity.Users;
 import com.DoAnTotNghiep.core.user.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,9 +21,13 @@ public class AccountController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    TravelAgencyService travelAgencyService;
+
     @GetMapping("/account")
     public String getAccount(Model model) {
         model.addAttribute("accounts", userService.getAll());
+        model.addAttribute("travelAgencies", travelAgencyService.getAll());
         return "adminAccount";
     }
 
@@ -44,11 +50,12 @@ public class AccountController {
         response.sendRedirect("/account");
     }
 
-    @PostMapping("/setRoleAdmin")
+    @PostMapping("/setRole")
     public void setRoleAdmin(HttpServletResponse response,
-                              @ModelAttribute("account") Users users) throws IOException {
+                             @ModelAttribute("account") Users users,
+                             @RequestParam("roleSystem") String roleNumber) throws IOException {
         Users usersDB = userService.findById(users.getId());
-        usersDB.setRole(Role.ROLE_SYSTEM_ADMIN);
+        usersDB.setRole(Role.of(Integer.parseInt(roleNumber)));
         userService.updateUsers(usersDB);
 
         response.sendRedirect("/account");
