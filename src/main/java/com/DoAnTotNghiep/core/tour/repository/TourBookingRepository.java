@@ -13,6 +13,9 @@ public interface TourBookingRepository extends JpaRepository<TourBooking, Long> 
     @Query(value = "SELECT tb.* FROM tour_booking tb JOIN tour_date_booking td ON td.id = tb.tour_date_booking_id WHERE td.tour_id = ?1", nativeQuery = true)
     List<TourBooking> getTourBookingByTourId(Long tour_id);
 
+    @Query(value = "SELECT tb.* FROM tour_booking tb JOIN tour_date_booking td ON td.id = tb.tour_date_booking_id JOIN tour t ON t.id = td.tour_id WHERE t.travel_agency_id = ?1", nativeQuery = true)
+    List<TourBooking> getTourBookingByTravelAgencyId(Long travel_agency_id);
+
     @Query(value = "SELECT * FROM tour_booking t WHERE t.payment_id = ?1", nativeQuery = true)
     TourBooking getTourBookingByPaymentId(String payment_id);
 

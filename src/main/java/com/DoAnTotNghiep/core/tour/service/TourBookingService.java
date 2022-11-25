@@ -74,4 +74,8 @@ public class TourBookingService {
         }
         return incomes;
     }
+
+    public List<TourBooking> getTourBookingByTravelAgencyId(Long travelAgencyId) {
+        return tourBookingRepository.getTourBookingByTravelAgencyId(travelAgencyId);
+    }
 }
