@@ -6,6 +6,7 @@ import com.DoAnTotNghiep.core.tour.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,5 +44,21 @@ public class TourService {
 
     public List<Tour> getTourApproved() {
         return tourRepository.getTourApproved();
+    }
+
+    public Integer getPercentTour() {
+        Date today = new Date();
+        Long presentNumber = tourRepository.countTourByMonth(today.getMonth() + 1);
+        Long previousNumber = tourRepository.countTourByMonth(today.getMonth());
+
+        if (presentNumber == null) {
+            presentNumber = 0L;
+        }
+
+        if (previousNumber == null || previousNumber == 0L) {
+            return 100;
+        }
+
+        return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
     }
 }

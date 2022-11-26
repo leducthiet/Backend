@@ -6,6 +6,7 @@ import com.DoAnTotNghiep.core.tour.repository.TravelAgencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,5 +32,21 @@ public class TravelAgencyService {
 
     public void deleteTravelAgency(TravelAgency travelAgency) {
         travelAgencyRepository.deleteById(travelAgency.getId());
+    }
+
+    public Integer getPercentNumberTravelAgency() {
+        Date today = new Date();
+        Long presentNumber = travelAgencyRepository.getNumberTravelAgencyByMonth(today.getMonth() + 1);
+        Long previousNumber = travelAgencyRepository.getNumberTravelAgencyByMonth(today.getMonth());
+
+        if (presentNumber == null) {
+            presentNumber = 0L;
+        }
+
+        if (previousNumber == null || previousNumber == 0L) {
+            return 100;
+        }
+
+        return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
     }
 }

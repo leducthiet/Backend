@@ -15,4 +15,7 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
 
     @Query(value = "SELECT * FROM tour t WHERE t.is_approved = 1", nativeQuery = true)
     List<Tour> getTourApproved();
+
+    @Query(value = "SELECT COUNT(*) FROM tour t WHERE MONTH(t.date_create) = ?1", nativeQuery = true)
+    Long countTourByMonth(int month);
 }

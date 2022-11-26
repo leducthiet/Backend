@@ -51,7 +51,7 @@ public class TourFeedBackService {
             presentNumber = 0L;
         }
 
-        if (previousNumber == null) {
+        if (previousNumber == null || previousNumber == 0) {
             return 100;
         }
 

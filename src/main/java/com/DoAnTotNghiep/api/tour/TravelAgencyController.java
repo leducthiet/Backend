@@ -21,10 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class TravelAgencyController {
@@ -58,6 +55,7 @@ public class TravelAgencyController {
         Files.write(fileNameAndPath, file.getBytes());
         travelAgency.setBusinessLicense(file.getOriginalFilename());
 
+        travelAgency.setDateCreate(new Date());
         travelAgencyService.createTravelAgency(travelAgency);
         response.sendRedirect("/travelAgency");
     }
@@ -76,6 +74,7 @@ public class TravelAgencyController {
             travelAgency.setBusinessLicense(travelAgencyService.findById(travelAgency.getId()).getBusinessLicense());
         }
 
+        travelAgency.setDateCreate(travelAgencyService.findById(travelAgency.getId()).getDateCreate());
         travelAgencyService.updateTravelAgency(travelAgency);
 
         response.sendRedirect("/travelAgency");

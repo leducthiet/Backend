@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/c7788420e7.js" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <body>
@@ -23,14 +23,20 @@
             <div class="row mt-3">
 
                 <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="col-xl-4 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Doanh thu tháng</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">+500%</div>
+                                        Đại lý lữ hành</div>
+                                    <th:block th:if="${percentTravelAgency &gt; 0}">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{'+' + ${percentTravelAgency} + '%'}">+500%</div>
+                                    </th:block>
+                                    <th:block th:unless="${percentTravelAgency &gt; 0}">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{${percentTravelAgency} + '%'}">+500%</div>
+                                    </th:block>
+
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-calendar fa-2x text-primary"></i>
@@ -41,32 +47,19 @@
                 </div>
 
                 <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Doanh thu năm</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">+150%</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-dollar-sign fa-2x text-success"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="col-xl-4 col-md-6 mb-4">
                     <div class="card border-left-info shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Đơn đặt tour
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tour
                                     </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">+100%</div>
+                                    <th:block th:if="${percentTour &gt; 0}">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{'+' + ${percentTour} + '%'}">+100%</div>
+                                    </th:block>
+                                    <th:block th:unless="${percentTour &gt; 0}">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{${percentTour} + '%'}">+100%</div>
+                                    </th:block>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-clipboard-list fa-2x text-info"></i>
@@ -77,14 +70,19 @@
                 </div>
 
                 <!-- Pending Requests Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="col-xl-4 col-md-6 mb-4">
                     <div class="card border-left-warning shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        Khách hàng</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">+75%</div>
+                                        Tài khoản</div>
+                                    <th:block th:if="${percentFeedbackTourBooking &gt; 0}">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{'+' + ${percentFeedbackTourBooking} + '%'}">+100%</div>
+                                    </th:block>
+                                    <th:block th:unless="${percentFeedbackTourBooking &gt; 0}">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{${percentFeedbackTourBooking} + '%'}">+100%</div>
+                                    </th:block>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-comments fa-2x text-warning"></i>
@@ -93,12 +91,14 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="row">
 
+
                 <!-- Area Chart -->
-                <div class="col-xl col-lg">
+                <div class="col-11">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div
@@ -122,15 +122,18 @@
                         <!-- Card Body -->
                         <div class="card-body">
                             <div class="chart-area">
-                                <canvas id="myAreaChart"></canvas>
+                                <canvas id="myChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
+
+
+
+
+
+
 
         </div>
 
@@ -198,14 +201,37 @@
 })(jQuery); // End of use strict
 
 </script>
-<script>
-    /*!
- * Start Bootstrap - SB Admin 2 v4.1.3 (https://startbootstrap.com/theme/sb-admin-2)
- * Copyright 2013-2021 Start Bootstrap
- * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin-2/blob/master/LICENSE)
- */
 
-!function(l){"use strict";l("#sidebarToggle, #sidebarToggleTop").on("click",function(e){l("body").toggleClass("sidebar-toggled"),l(".sidebar").toggleClass("toggled"),l(".sidebar").hasClass("toggled")&&l(".sidebar .collapse").collapse("hide")}),l(window).resize(function(){l(window).width()<768&&l(".sidebar .collapse").collapse("hide"),l(window).width()<480&&!l(".sidebar").hasClass("toggled")&&(l("body").addClass("sidebar-toggled"),l(".sidebar").addClass("toggled"),l(".sidebar .collapse").collapse("hide"))}),l("body.fixed-nav .sidebar").on("mousewheel DOMMouseScroll wheel",function(e){var o;768<l(window).width()&&(o=(o=e.originalEvent).wheelDelta||-o.detail,this.scrollTop+=30*(o<0?1:-1),e.preventDefault())}),l(document).on("scroll",function(){100<l(this).scrollTop()?l(".scroll-to-top").fadeIn():l(".scroll-to-top").fadeOut()}),l(document).on("click","a.scroll-to-top",function(e){var o=l(this);l("html, body").stop().animate({scrollTop:l(o.attr("href")).offset().top},1e3,"easeInOutExpo"),e.preventDefault()})}(jQuery);
+<script>
+  fetch("http://localhost:8080/api/income")
+        .then((response) => response.json())
+        .then((incomes) => {
+            const ctx = document.getElementById('myChart');
+              const labels = ['Tháng 1', 'Tháng 2', 'Tháng 3',
+                              'Tháng 4', 'Tháng 5', 'Tháng 6',
+                              'Tháng 7', 'Tháng 8', 'Tháng 9',
+                              'Tháng 10', 'Tháng 11', 'Tháng 12'];
+                const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: incomes.incomes,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+                };
+
+                new Chart(ctx, {
+                  type: 'line',
+                  data: data,
+                  options: {
+
+                  }
+                });
+        });
+
+
 </script>
 
 </body>

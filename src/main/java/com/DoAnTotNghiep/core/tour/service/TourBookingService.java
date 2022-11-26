@@ -57,7 +57,7 @@ public class TourBookingService {
             presentIncome = 0L;
         }
 
-        if (previousIncome == null) {
+        if (previousIncome == null || previousIncome == 0L) {
             return 100;
         }
 
@@ -73,7 +73,7 @@ public class TourBookingService {
             presentNumber = 0L;
         }
 
-        if (previousNumber == null) {
+        if (previousNumber == null || previousNumber == 0L) {
             return 100;
         }
 

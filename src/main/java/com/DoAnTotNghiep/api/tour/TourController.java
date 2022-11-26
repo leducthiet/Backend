@@ -5,7 +5,6 @@ import com.DoAnTotNghiep.core.paypal.PaypalService;
 import com.DoAnTotNghiep.core.tour.domain.BookingState;
 import com.DoAnTotNghiep.core.tour.entity.*;
 import com.DoAnTotNghiep.core.tour.service.*;
-import com.DoAnTotNghiep.core.user.entity.Users;
 import com.DoAnTotNghiep.core.user.service.UserService;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -121,6 +119,7 @@ public class TourController {
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
         tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        tour.setDateCreate(new Date());
         Tour tourCreated = tourService.createTour(tour);
 
         String[] tourBookingDates = tourBookingDate.split(",");
@@ -183,6 +182,7 @@ public class TourController {
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
         tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        tour.setDateCreate(tourService.findById(tour.getId()).getDateCreate());
         tourService.updateTour(tour);
         response.sendRedirect("/tour");
     }
@@ -289,6 +289,7 @@ public class TourController {
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
         tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        tour.setDateCreate(tourService.findById(tour.getId()).getDateCreate());
         tourService.updateTour(tour);
         response.sendRedirect("/tourOfTravelAgency?travelAgencyId=" + travelAgencyId);
     }

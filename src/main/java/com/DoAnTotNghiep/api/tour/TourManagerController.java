@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -105,6 +106,7 @@ public class TourManagerController {
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
         tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        tour.setDateCreate(new Date());
         Tour tourCreated = tourService.createTour(tour);
 
         String[] tourBookingDates = tourBookingDate.split(",");
@@ -167,6 +169,8 @@ public class TourManagerController {
         tour.setTourType(tourTypeService.findById(tourType_id));
         tour.setProvince(provinceService.findById(province_id));
         tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        tour.setDateCreate(tourService.findById(tour.getId()).getDateCreate());
+        tour.setIsApproved(tourService.findById(tour.getId()).getIsApproved());
         tourService.updateTour(tour);
         response.sendRedirect("/tourManager");
     }
@@ -177,8 +181,6 @@ public class TourManagerController {
                                          @RequestParam("travelAgencyId") Long travelAgencyId,
                                          @ModelAttribute("tour") Tour tour) throws IOException {
         tourService.deleteTour(tour);
-
-
         response.sendRedirect("/tourManager");
     }
 }
