@@ -570,7 +570,8 @@
             <thead>
             <tr>
               <th style="width: 10%">ID</th>
-              <th style="width: 40%">Tên Tour</th>
+              <th style="width: 25%">Tên Tour</th>
+              <th style="width: 15%">Trạng thái</th>
               <th style="width: 30%">Hình ảnh</th>
               <th style="width: 20%">Hàng động</th>
             </tr>
@@ -579,6 +580,19 @@
             <tr th:each ="tour,iter : ${tours}">
               <td th:utext="${tour.id}">...</td>
               <td th:utext="${tour.tourName}">...</td>
+              <td class="h5">
+                <th:block th:if="${tour.isApproved}">
+                  <div>
+                    <span class="badge badge-success">Phê duyệt</span>
+                  </div>
+
+                </th:block>
+                <th:block th:unless="${tour.isApproved}">
+                  <div>
+                    <span class="badge badge-danger">Chưa phê duyệt</span>
+                  </div>
+                </th:block>
+              </td>
               <td> <img class="img-thumbnail" th:src="@{'api/get-image?url=' + ${tour.thumbnailPath}}"/> </td>
               <td>
                 <a th:href="@{'tourBookingOfTour?tourId=' + ${tour.id}}" class="btn btn-info text-light mb-1">Xem đơn đặt tour</a><br>
@@ -714,6 +728,12 @@
 
                         </div>
                         <div class="modal-footer">
+                          <div class="col-sm-4">
+                            <select class="form-control" name="isApproved">
+                              <option value="True" th:selected="${tour.isApproved}">Phê duyệt</option>
+                              <option value="False" th:selected="${!tour.isApproved}">Chưa phê duyệt</option>
+                            </select>
+                          </div>
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                           <button type="submit" class="btn btn-primary">Sửa</button>
                         </div>

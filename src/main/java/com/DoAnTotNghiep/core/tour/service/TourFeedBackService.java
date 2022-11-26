@@ -46,6 +46,15 @@ public class TourFeedBackService {
         Date today = new Date();
         Long presentNumber = tourFeedBackRepository.getNumberFeedBackByMonth(today.getMonth() + 1);
         Long previousNumber = tourFeedBackRepository.getNumberFeedBackByMonth(today.getMonth());
+
+        if (presentNumber == null) {
+            presentNumber = 0L;
+        }
+
+        if (previousNumber == null) {
+            return 100;
+        }
+
         return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
     }
 

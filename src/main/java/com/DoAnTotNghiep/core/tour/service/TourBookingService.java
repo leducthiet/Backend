@@ -52,6 +52,15 @@ public class TourBookingService {
         Date today = new Date();
         Long presentIncome = tourBookingRepository.getIncomeByMonth(today.getMonth() + 1);
         Long previousIncome = tourBookingRepository.getIncomeByMonth(today.getMonth());
+
+        if (presentIncome == null) {
+            presentIncome = 0L;
+        }
+
+        if (previousIncome == null) {
+            return 100;
+        }
+
         return Math.toIntExact((presentIncome * 100) / previousIncome) - 100;
     }
 
@@ -59,6 +68,15 @@ public class TourBookingService {
         Date today = new Date();
         Long presentNumber = tourBookingRepository.getNumberOrderByMonth(today.getMonth() + 1);
         Long previousNumber = tourBookingRepository.getNumberOrderByMonth(today.getMonth());
+
+        if (presentNumber == null) {
+            presentNumber = 0L;
+        }
+
+        if (previousNumber == null) {
+            return 100;
+        }
+
         return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
     }
 

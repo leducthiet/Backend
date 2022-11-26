@@ -51,6 +51,7 @@ public class TourBookingManagerController {
 
         tourBooking.setTotalPrice(totalPrice);
         tourBooking.setUsers(userService.findById(usersId));
+        tourBooking.setDateCreate(tourBookingService.findById(tourBooking.getId()).getDateCreate());
         tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
 
         tourBookingService.updateTourBooking(tourBooking);
@@ -102,6 +103,7 @@ public class TourBookingManagerController {
 
         tourBooking.setTotalPrice(totalPrice);
         tourBooking.setUsers(userService.findById(usersId));
+        tourBooking.setDateCreate(tourBookingService.findById(tourBooking.getId()).getDateCreate());
         tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
 
         tourBookingService.updateTourBooking(tourBooking);

@@ -49,6 +49,9 @@ public class Tour {
     private String thumbnailPath;
 
     @Builder.Default
+    private Boolean isApproved = false;
+
+    @Builder.Default
     private String lng = "108.21";
 
     @Builder.Default

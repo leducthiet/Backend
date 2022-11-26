@@ -95,7 +95,7 @@ public class TourController {
     @GetMapping("/tourUser")
     public String getTourUser(Model model) {
         List<Province> provinces = provinceService.getAll();
-        model.addAttribute("tours", tourService.getAll());
+        model.addAttribute("tours", tourService.getTourApproved());
         model.addAttribute("tours1", tourService.getTourByProvinceId(provinces.get(0).getId()));
         model.addAttribute("tours2", tourService.getTourByProvinceId(provinces.get(1).getId()));
         model.addAttribute("tours3", tourService.getTourByProvinceId(provinces.get(2).getId()));
