@@ -48,4 +48,8 @@ public class TourFeedBackService {
         Long previousNumber = tourFeedBackRepository.getNumberFeedBackByMonth(today.getMonth());
         return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
     }
+
+    public List<TourFeedBack> getTourFeedBackByTravelAgencyId(Long travelAgencyId) {
+        return tourFeedBackRepository.getTourFeedBackByTravelAgencyId(travelAgencyId);
+    }
 }

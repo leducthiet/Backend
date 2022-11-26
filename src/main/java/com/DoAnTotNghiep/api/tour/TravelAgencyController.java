@@ -100,7 +100,7 @@ public class TravelAgencyController {
         model.addAttribute("tourTypes", tourTypeService.getAll());
         model.addAttribute("provinces", provinceService.getAll());
         List<String> tourDateBookings = new ArrayList<>();
-        for (Tour t : tourService.getAll()) {
+        for (Tour t : tourService.getTourByTravelAgencyId(travelAgencyId)) {
             StringBuilder temp = new StringBuilder();
             for (TourDateBooking td : tourDateBookingService.getTourDateBookingByTourId(t.getId())) {
                 temp.append(DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)

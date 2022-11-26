@@ -133,4 +133,52 @@ public class TourManagerController {
 
         response.sendRedirect("/tourManager");
     }
+
+    @PostMapping("/updateTourOfTravelAgencyManager")
+    public void updateTourOfTravelAgency(Model model,
+                                         HttpServletResponse response,
+                                         @ModelAttribute("tour") Tour tour,
+                                         @RequestParam("thumbnail") MultipartFile file,
+                                         @RequestParam("travelAgencyId") Long travelAgencyId,
+                                         @RequestParam("tourType_id") Long tourType_id,
+                                         @RequestParam("province_id") Long province_id,
+                                         @RequestParam("tourBookingDate") String tourBookingDate) throws IOException, ParseException {
+        if (!file.getOriginalFilename().equals("")) {
+            Path fileNameAndPath = Paths.get("src/main/resources/static/images", file.getOriginalFilename());
+            Files.write(fileNameAndPath, file.getBytes());
+
+            tour.setThumbnailPath(file.getOriginalFilename());
+        } else {
+            tour.setThumbnailPath(tourService.findById(tour.getId()).getThumbnailPath());
+        }
+
+        for (TourDateBooking t : tourDateBookingService.getTourDateBookingByTourId(tour.getId())) {
+            tourDateBookingService.deleteTourDateBooking(t);
+        }
+        String[] tourBookingDates = tourBookingDate.split(",");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        for (String s : tourBookingDates) {
+            TourDateBooking tourDateBooking = new TourDateBooking();
+            tourDateBooking.setTour(tourService.findById(tour.getId()));
+            tourDateBooking.setDateBooking(dateFormat.parse(s));
+            tourDateBookingService.createTourDateBooking(tourDateBooking);
+        }
+
+        tour.setTourType(tourTypeService.findById(tourType_id));
+        tour.setProvince(provinceService.findById(province_id));
+        tour.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        tourService.updateTour(tour);
+        response.sendRedirect("/tourManager");
+    }
+
+    @PostMapping("/deleteTourOfTravelAgencyManager")
+    public void deleteTourOfTravelAgency(Model model,
+                                         HttpServletResponse response,
+                                         @RequestParam("travelAgencyId") Long travelAgencyId,
+                                         @ModelAttribute("tour") Tour tour) throws IOException {
+        tourService.deleteTour(tour);
+
+
+        response.sendRedirect("/tourManager");
+    }
 }

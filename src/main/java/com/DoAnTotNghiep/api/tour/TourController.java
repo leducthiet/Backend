@@ -227,6 +227,7 @@ public class TourController {
             tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
 
             tourBooking.setBookingState(BookingState.PROCESSING);
+            tourBooking.setDateCreate(new Date());
             Long tourBookingId = tourBookingService.createTourBooking(tourBooking).getId();
 
             String url_str = "https://api.exchangerate.host/latest?base=VND&symbols=USD&amount=" + tourBooking.getTotalPrice();
