@@ -4,6 +4,7 @@ import com.DoAnTotNghiep.core.tour.service.TourBookingService;
 import com.DoAnTotNghiep.core.tour.service.TourFeedBackService;
 import com.DoAnTotNghiep.core.tour.service.TourService;
 import com.DoAnTotNghiep.core.tour.service.TravelAgencyService;
+import com.DoAnTotNghiep.core.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +19,14 @@ public class AdminController {
     @Autowired
     TourService tourService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/dashboard")
     public String getDashboard(Model model) {
         model.addAttribute("percentTravelAgency", travelAgencyService.getPercentNumberTravelAgency());
         model.addAttribute("percentTour", tourService.getPercentTour());
+        model.addAttribute("percentAccount", userService.getPercentAccount());
 
         return "Dashboard";
     }

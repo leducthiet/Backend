@@ -6,6 +6,7 @@ import com.DoAnTotNghiep.core.tour.repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -60,5 +61,26 @@ public class TourService {
         }
 
         return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
+    }
+
+    public List<Long> getTourThisYear() {
+        List<Long> tours = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            Long tour = tourRepository.countTourByMonth(i);
+            if (tour == null) {
+                tours.add(0L);
+            } else {
+                tours.add(tour);
+            }
+        }
+        return tours;
+    }
+
+    public List<Tour> getTourApprovedByKeyword(String keyword) {
+        return tourRepository.getTourApprovedByKeyword(keyword);
+    }
+
+    public List<Tour> getTourApprovedByKeywordAndTourType(String keyword, Long tourTypeId) {
+        return tourRepository.getTourApprovedByKeywordAndTourType(keyword, tourTypeId);
     }
 }

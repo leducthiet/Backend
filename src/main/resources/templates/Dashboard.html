@@ -77,11 +77,11 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                         Tài khoản</div>
-                                    <th:block th:if="${percentFeedbackTourBooking &gt; 0}">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{'+' + ${percentFeedbackTourBooking} + '%'}">+100%</div>
+                                    <th:block th:if="${percentAccount &gt; 0}">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{'+' + ${percentAccount} + '%'}">+100%</div>
                                     </th:block>
-                                    <th:block th:unless="${percentFeedbackTourBooking &gt; 0}">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{${percentFeedbackTourBooking} + '%'}">+100%</div>
+                                    <th:block th:unless="${percentAccount &gt; 0}">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:utext="@{${percentAccount} + '%'}">+100%</div>
                                     </th:block>
                                 </div>
                                 <div class="col-auto">
@@ -103,7 +103,7 @@
                         <!-- Card Header - Dropdown -->
                         <div
                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Biểu đồ doanh thu</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Biểu đồ số Tour</h6>
                             <div class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -203,10 +203,10 @@
 </script>
 
 <script>
-  fetch("http://localhost:8080/api/income")
+  fetch("http://localhost:8080/api/tourStatistic")
         .then((response) => response.json())
         .then((incomes) => {
-            const ctx = document.getElementById('myChart');
+              const ctx = document.getElementById('myChart');
               const labels = ['Tháng 1', 'Tháng 2', 'Tháng 3',
                               'Tháng 4', 'Tháng 5', 'Tháng 6',
                               'Tháng 7', 'Tháng 8', 'Tháng 9',
@@ -214,19 +214,27 @@
                 const data = {
                 labels: labels,
                 datasets: [{
-                    label: 'Doanh thu',
-                    data: incomes.incomes,
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    label: 'Số tour',
+                    data: incomes.tourStatistics,
+                    backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                    ],
+                    borderColor: [
+                      'rgb(255, 99, 132)',
+                    ],
+                    borderWidth: 1
                 }]
                 };
 
                 new Chart(ctx, {
-                  type: 'line',
+                  type: 'bar',
                   data: data,
                   options: {
-
+                    scales: {
+                      y: {
+                        beginAtZero: true
+                      }
+                    }
                   }
                 });
         });

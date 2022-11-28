@@ -1,6 +1,5 @@
 package com.DoAnTotNghiep.core.user.entity;
 
-import com.DoAnTotNghiep.core.hotel.entity.RoomBooking;
 import com.DoAnTotNghiep.core.tour.entity.TourBooking;
 import com.DoAnTotNghiep.core.tour.entity.TourFeedBack;
 import com.DoAnTotNghiep.core.tour.entity.TravelAgency;
@@ -44,9 +43,6 @@ public class Users {
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
     private List<TourBooking> tourBookings;
-
-    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
-    private List<RoomBooking> roomBookings;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
     private List<TourFeedBack> tourFeedBacks;

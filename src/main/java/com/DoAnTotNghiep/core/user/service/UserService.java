@@ -39,4 +39,20 @@ public class UserService {
     public void deleteUsers(Users users) {
         userRepository.deleteById(users.getId());
     }
+
+    public Integer getPercentAccount() {
+        Date today = new Date();
+        Long presentNumber = userRepository.countAccountCreatedByMonth(today.getMonth() + 1);
+        Long previousNumber = userRepository.countAccountCreatedByMonth(today.getMonth());
+
+        if (presentNumber == null) {
+            presentNumber = 0L;
+        }
+
+        if (previousNumber == null || previousNumber == 0L) {
+            return 100;
+        }
+
+        return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
+    }
 }
