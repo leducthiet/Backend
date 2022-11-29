@@ -42,9 +42,15 @@ public class TravelAgency {
 
     private Integer type;
 
+    private Date expiredDate;
+
     @OneToMany(mappedBy = "travelAgency", cascade = CascadeType.REMOVE)
     private List<Tour> tours;
 
     @OneToMany(mappedBy = "travelAgency", cascade = CascadeType.REMOVE)
     private List<Users> users;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

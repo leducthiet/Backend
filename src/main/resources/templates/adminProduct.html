@@ -22,25 +22,25 @@
         <div th:replace="fragments/sideBarAdmin :: sidebar">...</div>
 
         <div class="col" style="border-top: none; box-sizing: border-box;" id="viewcontent">
-            <h2 class="mt-3 pb-3 border-bottom mb-3" style="font-weight: 400;">Danh sách địa điểm tham quan</h2>
-            <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#exampleModal">Thêm địa điểm tham quan</button>
+            <h2 class="mt-3 pb-3 border-bottom mb-3" style="font-weight: 400;">Danh sách gói dịch vụ</h2>
+            <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#exampleModal">Thêm gói dịch vụ</button>
 
             <!-- Modal -->
             <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Thêm địa điểm tham quan</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Thêm gói dịch vụ</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    <form method="post" action="province" modelAttribute="province">
+                    <form method="post" action="product" modelAttribute="product">
 
                         <div class="modal-body">
 
                                     <div class="form-group">
-                                        <label for="inputEmail4">Tên địa điểm</label>
+                                        <label for="inputEmail4">Tên gói dịch vụ</label>
                                         <input type="text" class="form-control" id="inputEmail4" placeholder="" name="name">
                                     </div>
 
@@ -50,16 +50,16 @@
 
 
                                 <div class="form-group">
-                                    <label for="inputAddress">Địa chỉ</label>
-                                    <input type="text" class="form-control" id="inputAddress" placeholder="" name="address">
+                                    <label for="inputAddress">Giá gói dịch vụ</label>
+                                    <input type="text" class="form-control" id="inputAddress" placeholder="" name="price">
                                 </div>
 
 
 
 
                                 <div class="form-group">
-                                    <label for="inputAddress2">Mô tả</label>
-                                    <input type="text" class="form-control" id="inputAddress2" placeholder="" name="description">
+                                    <label for="inputAddress2">Số lượng tour được đăng tải lên trang</label>
+                                    <input type="text" class="form-control" id="inputAddress2" placeholder="" name="numberOfSlot">
                                 </div>
 
 
@@ -80,19 +80,19 @@
                         <thead>
                         <tr>
                             <th style="width: 10%">ID</th>
-                            <th style="width: 70%">Tên địa điểm</th>
+                            <th style="width: 70%">Tên gói dịch vụ</th>
                             <th style="width: 20%">Hàng động</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each ="province : ${provinces}">
-                            <td th:utext="${province.id}">...</td>
-                            <td th:utext="${province.name}">...</td>
+                        <tr th:each ="product : ${products}">
+                            <td th:utext="${product.id}">...</td>
+                            <td th:utext="${product.name}">...</td>
                             <td>
-                                <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#sua'+${province.id}">Sửa</button>
+                                <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#sua'+${product.id}">Sửa</button>
 
                                 <!-- Modal -->
-                                <div class="modal  fade bd-example-modal-lg"  th:id="'sua' + ${province.id}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal  fade bd-example-modal-lg"  th:id="'sua' + ${product.id}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -101,12 +101,12 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                        <form method="post" action="updateProvince" modelAttribute="province">
+                                        <form method="post" action="updateProduct" modelAttribute="product">
                                             <div class="modal-body">
-                                                    <input type="hidden" id="custId" name="id" th:value="${province.id}">
+                                                    <input type="hidden" name="id" th:value="${product.id}">
                                                     <div class="form-group">
-                                                        <label for="inputEmail4">Tên địa điểm</label>
-                                                        <input type="text" class="form-control" placeholder="" name="name" th:value="${province.name}">
+                                                        <label for="inputEmail4">Tên gói dịch vụ</label>
+                                                        <input type="text" class="form-control" placeholder="" name="name" th:value="${product.name}">
                                                     </div>
 
 
@@ -115,16 +115,16 @@
 
 
                                                     <div class="form-group">
-                                                        <label for="inputAddress">Địa chỉ</label>
-                                                        <input type="text" class="form-control"  placeholder="" name="address" th:value="${province.address}">
+                                                        <label for="inputAddress">Giá gói dịch vụ</label>
+                                                        <input type="text" class="form-control"  placeholder="" name="price" th:value="${product.price}">
                                                     </div>
 
 
 
 
                                                     <div class="form-group">
-                                                        <label for="inputAddress2">Mô tả</label>
-                                                        <input type="text" class="form-control"  placeholder="" name="description" th:value="${province.description}">
+                                                        <label for="inputAddress2">Số lượng tour được đăng tải lên trang</label>
+                                                        <input type="text" class="form-control"  placeholder="" name="numberOfSlot" th:value="${product.numberOfSlot}">
                                                     </div>
 
 
@@ -140,29 +140,29 @@
                                 </div>
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#xoa'+${province.id}">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#xoa'+${product.id}">
                                     Xóa
                                 </button>
 
                                 <!-- Modal -->
-                                <div class="modal fade" th:id="'xoa' + ${province.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" th:id="'xoa' + ${product.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="xoamodel">Xóa địa điểm</h5>
+                                                <h5 class="modal-title" id="xoamodel">Xóa gói dịch vụ</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
 
-                                            <form method="post" action="deleteProvince" modelAttribute="province">
-                                                <input type="hidden"  name="id" th:value="${province.id}">
+                                            <form method="post" action="deleteProduct" modelAttribute="product">
+                                                <input type="hidden"  name="id" th:value="${product.id}">
 
 
 
 
                                             <div class="modal-body">
-                                                Bạn có chắc chắn muốn xóa địa điểm này ?
+                                                Bạn có chắc chắn muốn xóa gói dịch vụ này ?
 
                                             </div>
                                             <div class="modal-footer">
