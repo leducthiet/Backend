@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -40,9 +41,14 @@ public class TravelAgencyController {
     @Autowired
     TourDateBookingService tourDateBookingService;
 
+    @Autowired
+    ProductService productService;
+
     @GetMapping("/travelAgency")
     public String getTravelAgency(Model model) {
         model.addAttribute("travelAgencies", travelAgencyService.getAll());
+        model.addAttribute("products", productService.getAll());
+
         return "adminTravelAgency";
     }
 
@@ -50,12 +56,21 @@ public class TravelAgencyController {
     public void createTravelAgency(Model model,
                                HttpServletResponse response,
                                @RequestParam("thumbnail") MultipartFile file,
+                               @RequestParam("product_id") Long product_id,
                                @ModelAttribute("province") TravelAgency travelAgency) throws IOException {
         Path fileNameAndPath = Paths.get("src/main/resources/static/images", file.getOriginalFilename());
         Files.write(fileNameAndPath, file.getBytes());
         travelAgency.setBusinessLicense(file.getOriginalFilename());
 
-        travelAgency.setDateCreate(new Date());
+        Date today = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        c.add(Calendar.DATE, 30);
+        Date expiredDate = c.getTime();
+
+        travelAgency.setDateCreate(today);
+        travelAgency.setExpiredDate(expiredDate);
+        travelAgency.setProduct(productService.findById(product_id));
         travelAgencyService.createTravelAgency(travelAgency);
         response.sendRedirect("/travelAgency");
     }
@@ -64,6 +79,7 @@ public class TravelAgencyController {
     public void updateTravelAgency(Model model,
                                HttpServletResponse response,
                                @RequestParam("thumbnail") MultipartFile file,
+                               @RequestParam("product_id") Long product_id,
                                @ModelAttribute("travelAgency") TravelAgency travelAgency) throws IOException {
         if (!Objects.equals(file.getOriginalFilename(), "")) {
             Path fileNameAndPath = Paths.get("src/main/resources/static/images", file.getOriginalFilename());
@@ -74,7 +90,11 @@ public class TravelAgencyController {
             travelAgency.setBusinessLicense(travelAgencyService.findById(travelAgency.getId()).getBusinessLicense());
         }
 
-        travelAgency.setDateCreate(travelAgencyService.findById(travelAgency.getId()).getDateCreate());
+        TravelAgency travelAgencyDB = travelAgencyService.findById(travelAgency.getId());
+
+        travelAgency.setProduct(productService.findById(product_id));
+        travelAgency.setExpiredDate(travelAgencyDB.getExpiredDate());
+        travelAgency.setDateCreate(travelAgencyDB.getDateCreate());
         travelAgencyService.updateTravelAgency(travelAgency);
 
         response.sendRedirect("/travelAgency");

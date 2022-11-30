@@ -44,6 +44,12 @@ public class TravelAgency {
 
     private Date expiredDate;
 
+    private String bank;
+
+    private String accountNumber;
+
+    private String accountHolder;
+
     @OneToMany(mappedBy = "travelAgency", cascade = CascadeType.REMOVE)
     private List<Tour> tours;
 

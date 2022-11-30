@@ -74,6 +74,31 @@
                   <input type="file" name="thumbnail" required>
                 </div>
 
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Gói dịch vụ</label>
+                    <select class="form-control" name="product_id">
+                      <option disabled selected>--Chọn gói dịch vụ--</option>
+                      <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputAddress2">Tên ngân hàng</label>
+                  <input type="text" class="form-control" placeholder="" name="bank">
+                </div>
+
+                <div class="form-group">
+                  <label for="inputAddress2">Số tài khoản</label>
+                  <input type="text" class="form-control" placeholder="" name="accountNumber">
+                </div>
+
+                <div class="form-group">
+                  <label for="inputAddress2">Chủ sở hữu</label>
+                  <input type="text" class="form-control" placeholder="" name="accountHolder">
+                </div>
+
 
               </div>
               <div class="modal-footer">
@@ -122,6 +147,10 @@
                         <div class="modal-body">
                           <input type="hidden" name="id" th:value="${travelAgency.id}">
                           <div class="form-group">
+                            <label for="inputAddress2">Ngày hết hạn gói dịch vụ</label>
+                            <input type="text" class="form-control" placeholder="" th:value="${#dates.format(travelAgency.expiredDate, 'yyyy-MM-dd')}" readonly>
+                          </div>
+                          <div class="form-group">
                             <label for="inputEmail4">Tên đại lý lữ hành</label>
                             <input type="text" class="form-control" placeholder="" name="name" th:value="${travelAgency.name}">
                           </div>
@@ -156,7 +185,30 @@
                             <input type="file" name="thumbnail">
                           </div>
 
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                              <label>Gói dịch vụ</label>
+                              <select class="form-control" name="product_id">
+                                <option disabled selected>--Chọn gói dịch vụ--</option>
+                                <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}" th:selected="${product.id} == ${travelAgency.product.id}"></option>
+                              </select>
+                            </div>
+                          </div>
 
+                          <div class="form-group">
+                            <label for="inputAddress2">Tên ngân hàng</label>
+                            <input type="text" class="form-control" placeholder="" name="bank" th:value="${travelAgency.bank}">
+                          </div>
+
+                          <div class="form-group">
+                            <label for="inputAddress2">Số tài khoản</label>
+                            <input type="text" class="form-control" placeholder="" name="accountNumber" th:value="${travelAgency.accountNumber}">
+                          </div>
+
+                          <div class="form-group">
+                            <label for="inputAddress2">Chủ sở hữu</label>
+                            <input type="text" class="form-control" placeholder="" name="accountHolder" th:value="${travelAgency.accountHolder}">
+                          </div>
 
                         </div>
                         <div class="modal-footer">
