@@ -6,8 +6,10 @@ import com.DoAnTotNghiep.config.paypal.PaypalPaymentIntent;
 import com.DoAnTotNghiep.config.paypal.PaypalPaymentMethod;
 import com.DoAnTotNghiep.core.paypal.PaypalService;
 import com.DoAnTotNghiep.core.tour.domain.BookingState;
+import com.DoAnTotNghiep.core.tour.entity.Invoice;
 import com.DoAnTotNghiep.core.tour.entity.TourBooking;
 import com.DoAnTotNghiep.core.tour.entity.TravelAgency;
+import com.DoAnTotNghiep.core.tour.service.InvoiceService;
 import com.DoAnTotNghiep.core.tour.service.ProductService;
 import com.DoAnTotNghiep.core.tour.service.TourBookingService;
 import com.DoAnTotNghiep.core.tour.service.TravelAgencyService;
@@ -58,6 +60,9 @@ public class PaymentController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    InvoiceService invoiceService;
 
     @PostMapping("/pay")
     public String pay(HttpServletRequest request,
@@ -163,6 +168,13 @@ public class PaymentController {
                 Date expiredDateAfter = c.getTime();
                 travelAgency.setExpiredDate(expiredDateAfter);
                 travelAgencyService.updateTravelAgency(travelAgency);
+
+                Invoice invoice = new Invoice();
+                invoice.setMonth(travelAgency.getMonth());
+                invoice.setCreatedDate(new Date());
+                invoice.setPrice(travelAgency.getMonth() * travelAgency.getProduct().getPrice());
+                invoice.setTravelAgency(travelAgencyService.findById(travelAgency.getId()));
+                invoiceService.createInvoice(invoice);
 
                 model.addAttribute("travelAgency", travelAgencyService.findById(travelAgency.getId()));
 

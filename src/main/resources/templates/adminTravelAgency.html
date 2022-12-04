@@ -135,6 +135,7 @@
               <td>
 
                 <a th:href="@{'tourOfTravelAgency?travelAgencyId=' + ${travelAgency.id}}" class="btn btn-info text-light mb-1">Xem tour</a><br>
+                <a th:href="@{'invoiceOfTravelAgency?travelAgencyId=' + ${travelAgency.id}}" class="btn btn-info text-light mb-1">Xem hóa đơn thanh toán</a><br>
 
                 <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#sua'+${travelAgency.id}">Sửa</button>
 

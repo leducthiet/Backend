@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/c7788420e7.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+</head>
+<body>
+<div class="container-fluid " style="height: 100vh; padding: 0;">
+    <div th:replace="fragments/headerManager :: header">...</div>
+
+    <div class="row" style="height: 92%; margin: 0;">
+        <div th:replace="fragments/sideBarManager :: sidebar">...</div>
+
+        <div class="col" style="border-top: none; box-sizing: border-box;" id="viewcontent">
+            <h2 class="mt-3 pb-3 border-bottom mb-3" style="font-weight: 400;" th:utext="@{'Danh sách hóa đơn thanh toán'}"></h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <table id="accountTable" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 10%">ID</th>
+                            <th style="width: 20%">Ngày tạo</th>
+                            <th style="width: 30%">Đại lý lữ hành</th>
+                            <th style="width: 20%">Tổng tiền hóa đơn</th>
+                            <th style="width: 20%">Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each ="invoice : ${invoices}">
+                            <td th:utext="${invoice.id}">...</td>
+                            <td th:utext="${#dates.format(invoice.createdDate, 'yyyy-MM-dd')}">...</td>
+                            <td th:utext="${invoice.travelAgency.name}">...</td>
+                            <td th:utext="${invoice.price}">...</td>
+                            <td>
+                                <button type="button" class="btn btn-warning" data-toggle="modal" th:attr="data-target='#xem'+${invoice.id}">Xem</button>
+
+                                <!-- Modal -->
+                                <div class="modal  fade bd-example-modal-lg"  th:id="'xem' + ${invoice.id}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" >Thông tin hóa đơn</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form method="post">
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label>Mã hóa đơn</label>
+                                                        <input type="text" class="form-control" placeholder="" th:value="${invoice.id}" readonly>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Ngày tạo</label>
+                                                        <input type="text" class="form-control" placeholder="" th:value="${#dates.format(invoice.createdDate, 'yyyy-MM-dd')}" readonly>
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Ngày hết hạn gói</label>
+                                                        <input type="text" class="form-control" placeholder="" th:value="${#dates.format(invoice.travelAgency.expiredDate, 'yyyy-MM-dd')}" readonly>
+
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Tổng tiền hóa đơn</label>
+                                                        <input type="text" class="form-control"  placeholder="" name="address" th:value="${invoice.price}" readonly>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Số tháng thanh toán</label>
+                                                        <input type="text" class="form-control"  placeholder="" name="description" th:value="${invoice.month}" readonly>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Đại lý lữ hành</label>
+                                                        <input type="text" class="form-control"  placeholder="" th:value="${invoice.travelAgency.name}" readonly>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>

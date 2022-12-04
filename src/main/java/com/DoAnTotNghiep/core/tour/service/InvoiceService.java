@@ -17,6 +17,10 @@ public class InvoiceService {
         return invoiceRepository.findAll();
     }
 
+    public List<Invoice> getInvoiceByTravelAgencyId(Long travelAgencyId) {
+        return invoiceRepository.getInvoiceByTravelAgencyId(travelAgencyId);
+    }
+
     public Invoice findById(Long id) {
         return invoiceRepository.findById(id).orElseThrow(BadRequestException::new);
     }
