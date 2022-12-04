@@ -1,9 +1,6 @@
 package com.DoAnTotNghiep.api.tour;
 
-import com.DoAnTotNghiep.core.tour.entity.Province;
-import com.DoAnTotNghiep.core.tour.entity.Tour;
-import com.DoAnTotNghiep.core.tour.entity.TourDateBooking;
-import com.DoAnTotNghiep.core.tour.entity.TravelAgency;
+import com.DoAnTotNghiep.core.tour.entity.*;
 import com.DoAnTotNghiep.core.tour.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +41,9 @@ public class TravelAgencyController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    InvoiceService invoiceService;
+
     @GetMapping("/travelAgency")
     public String getTravelAgency(Model model) {
         model.addAttribute("travelAgencies", travelAgencyService.getAll());
@@ -57,6 +57,7 @@ public class TravelAgencyController {
                                HttpServletResponse response,
                                @RequestParam("thumbnail") MultipartFile file,
                                @RequestParam("product_id") Long product_id,
+                               @RequestParam("month") Integer month,
                                @ModelAttribute("province") TravelAgency travelAgency) throws IOException {
         Path fileNameAndPath = Paths.get("src/main/resources/static/images", file.getOriginalFilename());
         Files.write(fileNameAndPath, file.getBytes());
@@ -65,13 +66,21 @@ public class TravelAgencyController {
         Date today = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(today);
-        c.add(Calendar.DATE, 30);
+        c.add(Calendar.DATE, 30 * month);
         Date expiredDate = c.getTime();
 
         travelAgency.setDateCreate(today);
         travelAgency.setExpiredDate(expiredDate);
         travelAgency.setProduct(productService.findById(product_id));
-        travelAgencyService.createTravelAgency(travelAgency);
+        Long travelId = travelAgencyService.createTravelAgency(travelAgency).getId();
+
+        Invoice invoice = new Invoice();
+        invoice.setMonth(month);
+        invoice.setCreatedDate(new Date());
+        invoice.setPrice(month * productService.findById(product_id).getPrice());
+        invoice.setTravelAgency(travelAgencyService.findById(travelId));
+        invoiceService.createInvoice(invoice);
+
         response.sendRedirect("/travelAgency");
     }
 

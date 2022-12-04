@@ -115,4 +115,36 @@ public class ProfileController {
 
         response.sendRedirect("/managerProfile");
     }
+
+    @GetMapping("/adminProfile")
+    public String getAdminProfile(Model model) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserImpl userImpl = (UserImpl) userDetails;
+        Users users = userImpl.getUsers();
+
+        model.addAttribute("account", userService.findById(users.getId()));
+
+        return "adminProfile";
+    }
+
+    @PostMapping("/updateAccountProfileAdmin")
+    public void updateAccountAdmin(HttpServletResponse response,
+                              @ModelAttribute("account") Users users) throws IOException {
+        Users usersDB = userService.findById(users.getId());
+        usersDB.setMobilePhone(users.getMobilePhone());
+        usersDB.setName(users.getName());
+        userService.updateUsers(usersDB);
+
+        response.sendRedirect("/adminProfile");
+    }
+
+    @PostMapping("/changePasswordAdmin")
+    public void changePasswordAdmin(HttpServletResponse response,
+                               @ModelAttribute("account") Users users) throws IOException {
+        Users usersDB = userService.findById(users.getId());
+        usersDB.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
+        userService.updateUsers(usersDB);
+
+        response.sendRedirect("/adminProfile");
+    }
 }

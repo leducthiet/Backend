@@ -22,8 +22,8 @@ public class TravelAgencyService {
         return travelAgencyRepository.findById(id).orElseThrow(BadRequestException::new);
     }
 
-    public void createTravelAgency(TravelAgency travelAgency) {
-        travelAgencyRepository.save(travelAgency);
+    public TravelAgency createTravelAgency(TravelAgency travelAgency) {
+        return travelAgencyRepository.saveAndFlush(travelAgency);
     }
 
     public void updateTravelAgency(TravelAgency travelAgency) {
@@ -48,5 +48,9 @@ public class TravelAgencyService {
         }
 
         return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
+    }
+
+    public TravelAgency getTravelAgencyByPaymentId(String paymentId) {
+        return travelAgencyRepository.getTravelAgencyByPaymentId(paymentId);
     }
 }

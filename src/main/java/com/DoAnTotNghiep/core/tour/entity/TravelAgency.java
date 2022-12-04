@@ -50,6 +50,11 @@ public class TravelAgency {
 
     private String accountHolder;
 
+    @Column(unique=true)
+    private String paymentId;
+
+    private Integer month;
+
     @OneToMany(mappedBy = "travelAgency", cascade = CascadeType.REMOVE)
     private List<Tour> tours;
 
@@ -59,4 +64,7 @@ public class TravelAgency {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @OneToMany(mappedBy = "travelAgency", cascade = CascadeType.REMOVE)
+    private List<Invoice> invoices;
 }

@@ -53,9 +53,13 @@ public class AccountController {
     @PostMapping("/setRole")
     public void setRoleAdmin(HttpServletResponse response,
                              @ModelAttribute("account") Users users,
+                             @RequestParam("travelAgency_id") Long travelAgencyId,
                              @RequestParam("roleSystem") String roleNumber) throws IOException {
         Users usersDB = userService.findById(users.getId());
         usersDB.setRole(Role.of(Integer.parseInt(roleNumber)));
+        if (Integer.parseInt(roleNumber) == 1) {
+            usersDB.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        }
         userService.updateUsers(usersDB);
 
         response.sendRedirect("/account");

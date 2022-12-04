@@ -242,8 +242,6 @@ public class TourController {
 
             JsonObject jsonObjRate = jsonObj.get("rates").getAsJsonObject();
             String value = jsonObjRate.get("USD").getAsString();
-            System.out.println(value);
-
 
             if (paymentMethod == 2) {
                 return "forward:/pay?price=" + value + "&tourBookingId=" + tourBookingId;

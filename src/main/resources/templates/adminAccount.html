@@ -228,6 +228,22 @@
                                                         </div>
                                                     </div>
 
+                                                    <th:block th:switch="${account.role.value}">
+
+                                                        <div th:case="'1'">
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-12">
+                                                                    <label>Quản lý đại lý lữ hành</label>
+                                                                    <input type="text" class="form-control" th:value="${account.travelAgency.name}" readonly>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </th:block>
+
+
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
