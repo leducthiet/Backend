@@ -15,7 +15,7 @@
 
     <div th:replace="fragments/header :: header">...</div>
 
-<div class="container mt-3 pt-5">
+<div class="container mt-3 pt-5 mb-5">
     <form method="post" action="/submitOrder" modelAttribute="tourBooking">
         <input type="hidden" name="tourId" th:value="${tour.id}">
         <input type="hidden" name="totalPrice" value="0" id="totalPrice">

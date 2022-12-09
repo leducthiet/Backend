@@ -25,6 +25,16 @@
     .widget .btn-block { border-top-left-radius:0px;border-top-right-radius:0px; }
   </style>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700&family=Varela+Round&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@700&family=Lora:ital,wght@1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@700&family=Lora:ital,wght@1,500&family=Manrope:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@1,600&family=Kanit:wght@700&family=Lora:ital,wght@1,500&family=Manrope:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@1,600&family=Kanit:wght@700&family=Lora:ital,wght@1,500&family=Manrope:wght@500&family=Noto+Serif:wght@700&display=swap" rel="stylesheet">
+
+  <style> @import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@700&family=Varela+Round&display=swap'); </style>
+
 </head>
 <body>
   <div th:replace="fragments/header :: header">...</div>
@@ -36,22 +46,22 @@
 
   <div class="container mt-3 pt-5">
     <div class="row">
-      <div class="col-8">
+      <div class="col-9">
         <div class="card mt-3 ">
-          <div class="card-header">
-            <h5 th:text="${tour.tourName}"></h5>
-          </div>
-          <div class="card-body">
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-              <div class="carousel-inner">
 
+          <div class="card-body">
+            <h3 th:text="${tour.tourName}" style="font-weight: 700;font-family: 'Alexandria', sans-serif;"></h3>
+            <p>
+              <i class="fa-sharp fa-solid fa-location-dot" style="color: rgba(104,113,118,1.00);"></i>
+              <span th:utext="${tour.province.name}" style="color: rgba(104,113,118,1.00);font-weight:500;"></span>
+            </p>
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="border-radius: 30px 30px 30px 30px;
+    overflow: hidden;">
+              <div class="carousel-inner">
                   <div  class="carousel-item" th:each ="tourImage,iter : ${tourImages}" th:classappend="${iter.first} ? 'active' : ''">
                     <img class="d-block w-100" th:src="@{'http://localhost:8080/api/get-image?url=' + ${tourImage.imagePath}}" alt="First slide" style="width: 100%;height: 30vw;object-fit: cover;">
 
                   </div>
-
-
-
               </div>
               <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -64,124 +74,103 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-4" style="padding-left:0px">
-        <div class="card mt-3 ">
-          <div class="card-header">
-            <h5 > Chi tiết</h5>
-          </div>
-          <div class="card-body">
-            <div style="width: 100%;height: 30vw;" >
-              <h6>Thời gian : <span th:text="${tour.duration}"></span> ngày</h6>
-              <h6>Vé người lớn : <span class="h4 text-primary" th:text="${tour.priceAdult}"></span> VNĐ</h6>
-              <h6>Vé trẻ em 5-11 tuổi : <span class="h4 text-primary" th:text="${tour.priceChild5To11}"></span> VNĐ</h6>
-              <h6>Vé trẻ em dưới 5 tuổi : <span class="h4 text-primary" th:text="${tour.priceChild2To5}"></span> VNĐ</h6>
-              <th:block th:if="${session.username}">
-                <a th:href="@{'/tourOrder/' + ${tour.id}}" class="btn btn-primary btn-lg btn-block text-light">Đặt ngay</a>
-              </th:block>
-              <th:block th:unless="${session.username}">
-                <a href="http://localhost:8080/login" class="btn btn-primary btn-lg btn-block text-light">Đặt ngay</a>
-              </th:block>
+        <h4 style="font-family: 'Noto Serif', serif;" class="mt-3">Điểm nổi bật</h4>
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body" th:utext="${tour.description}"></div>
             </div>
-
           </div>
         </div>
-      </div>
-    </div>
 
-    <div>
-      <div class="row">
-        <div class="col-12">
-          <div class="card mt-3 ">
+        <h4 style="font-family: 'Noto Serif', serif;" class="mt-3">Lịch trình</h4>
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body" th:utext="${tour.schedule}"></div>
+            </div>
+          </div>
+        </div>
 
-            <div class="card-body" style="width: 100%;">
-              <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Điểm nổi bật</a>
-                  <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Lịch trình</a>
-                  <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Ngày khởi hành</a>
-                  <a class="nav-item nav-link" id="nav-feedback-tab" data-toggle="tab" href="#nav-feedback" role="tab" aria-controls="nav-feedback" aria-selected="false">Đánh giá</a>
-                  <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-map" role="tab" aria-controls="nav-map" aria-selected="false">Bản đồ</a>
-                </div>
-              </nav>
-              <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                          <div class="mt-3" th:utext="${tour.description}"></div>
-                </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                          <div class="mt-3" th:utext="${tour.schedule}"></div>
-                </div>
-                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                  <div class="card">
+        <h4 style="font-family: 'Noto Serif', serif;" class="mt-3">Ngày khởi hành</h4>
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <table class="table table-hover" >
+                  <thead>
+                  <tr>
+                    <th style="width: 20%">ID</th>
+                    <th style="width: 50%">Ngày khởi hành</th>
+                    <th style="width: 30%"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each ="tourDateBooking,iter : ${tourDateBookings}">
+                    <td th:utext="${iter.index}">...</td>
+                    <td th:utext="${#dates.format(tourDateBooking.dateBooking, 'yyyy-MM-dd')}">...</td>
+                    <td>
+                      <a type="button" class="btn btn-danger text-light" th:href="@{'/tourOrder/' + ${tour.id}}">Đặt tour</a>
 
-                    <div class="card-body">
-                      <table class="table table-hover" >
-                        <thead>
-                        <tr>
-                          <th style="width: 20%">ID</th>
-                          <th style="width: 50%">Ngày khởi hành</th>
-                          <th style="width: 30%"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each ="tourDateBooking,iter : ${tourDateBookings}">
-                          <td th:utext="${iter.index}">...</td>
-                          <td th:utext="${#dates.format(tourDateBooking.dateBooking, 'yyyy-MM-dd')}">...</td>
-                          <td>
-                            <button type="button" class="btn btn-danger">Đặt tour</button>
+                    </td>
+                  </tr>
 
-                          </td>
-                        </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                        </tbody>
-                      </table>
+        <h4 style="font-family: 'Noto Serif', serif;" class="mt-3">Bản đồ</h4>
+        <div class="row">
+          <div class="col">
+            <div class="card" style="height:50vh;">
+              <div class="card-body" style="padding:0">
+                <div id="map"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4 style="font-family: 'Noto Serif', serif;" class="mt-3">Đánh giá của du khách</h4>
+        <div class="row mb-5">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+
+                <h5>
+                  <th:block th:switch="${#lists.size(tourFeedBacks)}">
+                    <div th:case="'0'" class="text-center">
+                      <span style="font-style: italic;">Chưa có đánh giá</span>
                     </div>
-                  </div>
-                </div>
+                  </th:block>
 
-                <div class="tab-pane fade" id="nav-feedback" role="tabpanel" aria-labelledby="nav-feedback-tab">
+                </h5>
 
-                  <div class="card mt-3 ">
-                    <div class="card-header">
-                      <h5>Đánh giá của khách <i class="fa-solid fa-thumbs-up text-primary"></i></h5>
-                    </div>
-                    <div class="card-body">
-                      <ul class="list-group">
-                        <li class="list-group-item" th:each ="tourFeedBack : ${tourFeedBacks}" th:unless="${tourFeedBack.isHidden}">
-                          <div class="row">
-                            <div class="col-xs-2 col-md-1 bg-primary d-flex align-items-center justify-content-center">
-                              <span class="h3 text-light" th:utext="${tourFeedBack.rating}"></span>
-                            </div>
-                            <div class="col-xs-10 col-md-11">
-                              <div>
-                                <p th:utext="${tourFeedBack.comment}">
-                                  Google Style Login Page Design Using Bootstrap
-                                </p>
-                                <div class="mic-info">
-                                  By: <span class="text-primary" th:utext="${tourFeedBack.users.name} ">Bhaumik Patel</span>
-                                  <span th:utext="${#dates.format(tourFeedBack.createDate, 'yyyy-MM-dd')}"></span>
-                                </div>
-                              </div>
-
-                            </div>
+                <ul class="list-group">
+                  <li class="list-group-item" th:each ="tourFeedBack : ${tourFeedBacks}" th:unless="${tourFeedBack.isHidden}">
+                    <div class="row">
+                      <div class="col-xs-2 col-md-1 bg-primary d-flex align-items-center justify-content-center rounded">
+                        <span class="h3 text-light" th:utext="${tourFeedBack.rating}">5</span>
+                      </div>
+                      <div class="col-xs-10 col-md-11">
+                        <div>
+                          <p th:utext="${tourFeedBack.comment}">
+                            Google Style Login Page Design Using Bootstrap
+                          </p>
+                          <div class="mic-info">
+                            By: <span class="text-primary" th:utext="${tourFeedBack.users.name} ">Bhaumik Patel</span>
+                            <span th:utext="${#dates.format(tourFeedBack.createDate, 'yyyy-MM-dd')}"></span>
                           </div>
-                        </li>
+                        </div>
 
-                      </ul>
-
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </li>
 
-                <div class="tab-pane fade" id="nav-map" role="tabpanel" aria-labelledby="nav-map-tab">
-                  <div class="card mt-3">
-                    <div class="card-body" style="min-height:350px; position:relative;" >
-                      <div id="map"></div>
-                    </div>
-                  </div>
-                </div>
-
+                </ul>
               </div>
             </div>
           </div>
@@ -189,13 +178,36 @@
 
       </div>
 
+      <div class="col-3" style="padding-left:0px;" >
+        <div class="sticky-top" style="top:70px">
+          <div class="card mt-3 ">
+
+            <div class="card-body">
+              <div>
+                <h5 style="font-weight: 500;font-family: 'Alexandria', sans-serif;">Giá từ</h5>
+                <h2 th:utext="${tour.priceChild2To5} + ' VNĐ'" style="font-weight: 700;font-family: 'Alexandria', sans-serif;color: rgb(255, 94, 31);"></h2>
+                <p><i class="fa-solid fa-hourglass-start" style="color: rgb(255, 94, 31);"></i><span style="font-family: 'Lora', serif; font-weight: bold;"> Độ dài: </span><span style="font-family: 'Lora', serif;" th:text="${tour.duration} + ' ngày'"></span></p>
+                <p><i class="fa-solid fa-calendar" style="color: rgb(255, 94, 31);"></i><span style="font-family: 'Lora', serif; font-weight: bold;"> Ngày có vé tiếp theo: </span><span style="font-family: 'Lora', serif;" th:utext="${#dates.format(tourDateBookings[0].dateBooking, 'dd-MM-yyyy')}"></span></p>
+                <p><i class="fa-solid fa-ban" style="color: rgb(255, 94, 31);"></i><span style="font-family: 'Lora', serif;font-weight: bold;"> Hủy miễn phí</span></p>
+                <p><i class="fa-solid fa-bolt" style="color: rgb(255, 94, 31);"></i><span style="font-family: 'Lora', serif;font-weight: bold;"> Xác nhận tức thì</span></p>
+                <th:block th:if="${session.username}">
+                  <a th:href="@{'/tourOrder/' + ${tour.id}}" class="btn btn-lg btn-block text-light" style="background-color: rgb(255, 94, 31);font-weight: 700;font-family: 'Alexandria', sans-serif;">Đặt ngay</a>
+                </th:block>
+                <th:block th:unless="${session.username}">
+                  <a href="http://localhost:8080/login" class="btn btn-lg btn-block text-light" style="background-color: rgb(255, 94, 31);font-weight: 700;font-family: 'Alexandria', sans-serif;">Đặt ngay</a>
+                </th:block>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
 
 
 
-
-
-  </div>
   </div>
 
   <script>
