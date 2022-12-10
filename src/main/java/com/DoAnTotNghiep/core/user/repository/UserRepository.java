@@ -9,4 +9,8 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     @Query(value = "SELECT COUNT(*) FROM users u WHERE MONTH(u.creation_date) = ?1", nativeQuery = true)
     Long countAccountCreatedByMonth(int month);
+
+    Users findByEmail(String email);
+
+    Users findByResetPasswordToken(String token);
 }

@@ -23,10 +23,12 @@ public class Users {
 
     private String name;
 
+    @Column(unique=true)
     private String username;
 
     private String password;
 
+    @Column(unique=true)
     private String email;
 
     private String mobilePhone;
@@ -40,6 +42,9 @@ public class Users {
     private Role role;
 
     private String avatar;
+
+    @Column(unique=true)
+    private String resetPasswordToken;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
     private List<TourBooking> tourBookings;

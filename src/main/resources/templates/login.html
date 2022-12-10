@@ -8,25 +8,27 @@
     <script src="js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #f8f8f8;">
+    <div class="container-fluid d-flex justify-content-center align-items-center" id="overall" style="height: 100vh;">
         <div class="card" style="width: calc(100%/3);">
             <div class="card-header">Đăng nhập</div>
             <div class="card-body">
                 <form method="post" id="loginForm" action="login" accept-charset="utf-8">
                     <div class="mb-3">
-                        <input type="text" class="form-control" name="username" id="emailID" placeholder="Tên đăng nhập"></input>
+                        <input type="text" class="form-control" name="username" id="emailID"
+                               placeholder="Tên đăng nhập"/>
                     </div>
                     <div class="mb-3">
-                        <input type="password" class="form-control" name="password" id="passwordID" placeholder="Mật khẩu"></input>
+                        <input type="password" class="form-control" name="password" id="passwordID"
+                               placeholder="Mật khẩu"/>
                         <div th:if="${ErrorMessage}" th:utext="${ErrorMessage}"
                              style="color:red;font-style:italic;"></div>
                     </div>
                     <div class="mb-3 d-grid gap-2">
-                    <button class="btn btn-success btn-block">Đăng nhập</button>
+                    <button class="btn btn-primary">Đăng nhập</button>
                     </div>
-                    <div class="mb-3">
-                    <a href="register" class="d-flex justify-content-end">Đăng kí</a>
-                    </div>
+
+                    <a href="forgot_password" style="text-decoration: none;" class="d-flex justify-content-end mb-1">Quên mật khẩu</a>
+                    <a href="register" style="text-decoration: none;" class="d-flex justify-content-end"> Đăng kí</a>
                 </form>
             </div>
         </div>

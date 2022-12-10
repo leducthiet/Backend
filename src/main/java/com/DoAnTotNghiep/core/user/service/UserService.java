@@ -1,6 +1,7 @@
 package com.DoAnTotNghiep.core.user.service;
 
 import com.DoAnTotNghiep.config.exception.BadRequestException;
+import com.DoAnTotNghiep.config.exception.CustomerNotFoundException;
 import com.DoAnTotNghiep.core.user.domain.Role;
 import com.DoAnTotNghiep.core.user.entity.Users;
 import com.DoAnTotNghiep.core.user.repository.UserRepository;
@@ -54,5 +55,28 @@ public class UserService {
         }
 
         return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
+    }
+
+    public void updateResetPasswordToken(String token, String email) throws CustomerNotFoundException {
+        Users users = userRepository.findByEmail(email);
+        if (users != null) {
+            users.setResetPasswordToken(token);
+            userRepository.save(users);
+        } else {
+            throw new CustomerNotFoundException("Không tìm thấy tài khoản với email : " + email);
+        }
+    }
+
+    public Users getByResetPasswordToken(String token) {
+        return userRepository.findByResetPasswordToken(token);
+    }
+
+    public void updatePassword(Users users, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        users.setPassword(encodedPassword);
+
+        users.setResetPasswordToken(null);
+        userRepository.save(users);
     }
 }
