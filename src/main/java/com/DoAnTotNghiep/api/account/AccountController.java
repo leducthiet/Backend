@@ -31,6 +31,20 @@ public class AccountController {
         return "adminAccount";
     }
 
+    @PostMapping("account")
+    public void createAccount(HttpServletResponse response,
+                              @ModelAttribute("account") Users users,
+                              @RequestParam("travelAgency_id") Long travelAgencyId,
+                              @RequestParam("roleSystem") String roleNumber) throws IOException {
+        users.setRole(Role.of(Integer.parseInt(roleNumber)));
+        if (Integer.parseInt(roleNumber) == 1) {
+            users.setTravelAgency(travelAgencyService.findById(travelAgencyId));
+        }
+        userService.create(users);
+
+        response.sendRedirect("/account");
+    }
+
     @PostMapping("/resetPassword")
     public void resetPassword(HttpServletResponse response,
                                 @ModelAttribute("account") Users users) throws IOException {

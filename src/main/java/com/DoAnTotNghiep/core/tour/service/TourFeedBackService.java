@@ -42,17 +42,17 @@ public class TourFeedBackService {
         return tourFeedBackRepository.getTourFeedBackByTourId(tourId);
     }
 
-    public Integer getPercentFeedbackTourBooking() {
+    public Integer getPercentFeedbackTourBooking(Long travelAgencyId) {
         Date today = new Date();
-        Long presentNumber = tourFeedBackRepository.getNumberFeedBackByMonth(today.getMonth() + 1);
-        Long previousNumber = tourFeedBackRepository.getNumberFeedBackByMonth(today.getMonth());
+        Long presentNumber = tourFeedBackRepository.getNumberFeedBackByMonth(today.getMonth() + 1, travelAgencyId);
+        Long previousNumber = tourFeedBackRepository.getNumberFeedBackByMonth(today.getMonth(), travelAgencyId);
 
-        if (presentNumber == null) {
-            presentNumber = 0L;
-        }
-
-        if (previousNumber == null || previousNumber == 0) {
-            return 100;
+        if (previousNumber == 0) {
+            if (presentNumber == 0) {
+                return 0;
+            } else {
+                return 100;
+            }
         }
 
         return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;

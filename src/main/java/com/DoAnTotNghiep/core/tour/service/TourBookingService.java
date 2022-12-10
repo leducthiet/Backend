@@ -48,42 +48,46 @@ public class TourBookingService {
         return tourBookingRepository.getTourBookingByTourId(tourId);
     }
 
-    public Integer getPercentTourBooking() {
+    public Integer getPercentTourBooking(Long travelAgencyId) {
         Date today = new Date();
-        Long presentIncome = tourBookingRepository.getIncomeByMonth(today.getMonth() + 1);
-        Long previousIncome = tourBookingRepository.getIncomeByMonth(today.getMonth());
+        Long presentIncome = tourBookingRepository.getIncomeByMonth(today.getMonth() + 1, travelAgencyId);
+        Long previousIncome = tourBookingRepository.getIncomeByMonth(today.getMonth(), travelAgencyId);
 
         if (presentIncome == null) {
             presentIncome = 0L;
         }
 
         if (previousIncome == null || previousIncome == 0L) {
-            return 100;
+            if (presentIncome == 0) {
+                return 0;
+            } else {
+                return 100;
+            }
         }
 
         return Math.toIntExact((presentIncome * 100) / previousIncome) - 100;
     }
 
-    public Integer getPercentNumberTourBooking() {
+    public Integer getPercentNumberTourBooking(Long travelAgencyId) {
         Date today = new Date();
-        Long presentNumber = tourBookingRepository.getNumberOrderByMonth(today.getMonth() + 1);
-        Long previousNumber = tourBookingRepository.getNumberOrderByMonth(today.getMonth());
+        Long presentNumber = tourBookingRepository.getNumberOrderByMonth(today.getMonth() + 1, travelAgencyId);
+        Long previousNumber = tourBookingRepository.getNumberOrderByMonth(today.getMonth(), travelAgencyId);
 
-        if (presentNumber == null) {
-            presentNumber = 0L;
-        }
-
-        if (previousNumber == null || previousNumber == 0L) {
-            return 100;
+        if (previousNumber == 0) {
+            if (presentNumber == 0) {
+                return 0;
+            } else {
+                return 100;
+            }
         }
 
         return Math.toIntExact((presentNumber * 100) / previousNumber) - 100;
     }
 
-    public List<Long> getIncomeThisYear() {
+    public List<Long> getIncomeThisYear(Long travelAgencyId) {
         List<Long> incomes = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
-            Long income = tourBookingRepository.getIncomeByMonth(i);
+            Long income = tourBookingRepository.getIncomeByMonth(i, travelAgencyId);
             if (income == null) {
                 incomes.add(0L);
             } else {

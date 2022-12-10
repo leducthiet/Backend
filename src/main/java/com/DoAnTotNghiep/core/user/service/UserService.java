@@ -25,6 +25,13 @@ public class UserService {
         userRepository.save(users);
     }
 
+    public void create(Users users) {
+        users.setPassword(new BCryptPasswordEncoder().encode(users.getPassword()));
+        users.setActive(true);
+        users.setCreationDate(new Date());
+        userRepository.save(users);
+    }
+
     public Users findById(Long id) {
         return userRepository.findById(id).orElseThrow(BadRequestException::new);
     }

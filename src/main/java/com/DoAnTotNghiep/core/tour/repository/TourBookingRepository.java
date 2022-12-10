@@ -19,9 +19,9 @@ public interface TourBookingRepository extends JpaRepository<TourBooking, Long> 
     @Query(value = "SELECT * FROM tour_booking t WHERE t.payment_id = ?1", nativeQuery = true)
     TourBooking getTourBookingByPaymentId(String payment_id);
 
-    @Query(value = "SELECT SUM(tb.total_price) FROM tour_booking tb WHERE tb.booking_state = 2 AND MONTH(tb.date_create) = ?1", nativeQuery = true)
-    Long getIncomeByMonth(int month);
+    @Query(value = "SELECT ISNULL(SUM(tb.total_price), 0) FROM tour_booking tb JOIN users u ON u.id = tb.user_id WHERE tb.booking_state = 2 AND MONTH(tb.date_create) = ?1 AND u.travel_agency_id = ?2", nativeQuery = true)
+    Long getIncomeByMonth(int month, Long travelAgencyId);
 
-    @Query(value = "SELECT COUNT(*) FROM tour_booking tb WHERE MONTH(tb.date_create) = ?1", nativeQuery = true)
-    Long getNumberOrderByMonth(int month);
+    @Query(value = "SELECT COUNT(*) FROM tour_booking tb JOIN users u ON u.id = tb.user_id WHERE MONTH(tb.date_create) = ?1 AND travel_agency_id = ?2", nativeQuery = true)
+    Long getNumberOrderByMonth(int month, Long travelAgencyId);
 }
