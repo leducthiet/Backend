@@ -62,7 +62,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "/tourUser", "/login", "/register", "/css/**", "/js/**", "/contact"
-                , "/api/get-image", "/tourDetail/**", "/api/income", "/api/tourStatistic")
+                , "/api/get-image", "/tourDetail/**", "/api/income", "/api/tourStatistic", "/forgot_password",
+                        "/reset_password")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
