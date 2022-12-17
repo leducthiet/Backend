@@ -24,4 +24,7 @@ public interface TourBookingRepository extends JpaRepository<TourBooking, Long> 
 
     @Query(value = "SELECT COUNT(*) FROM tour_booking tb JOIN users u ON u.id = tb.user_id WHERE MONTH(tb.date_create) = ?1 AND travel_agency_id = ?2", nativeQuery = true)
     Long getNumberOrderByMonth(int month, Long travelAgencyId);
+
+    @Query(value = "SELECT MAX(sender_batch_id) FROM tour_booking", nativeQuery = true)
+    Long getMaxSenderBatchId();
 }

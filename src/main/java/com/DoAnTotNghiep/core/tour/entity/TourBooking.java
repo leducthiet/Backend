@@ -44,6 +44,12 @@ public class TourBooking {
     @Column(unique=true)
     private String paymentId;
 
+    private Long senderBatchId;
+
+    private String totalPriceUSD;
+
+    private String payoutBatchId;
+
     @ManyToOne
     @JoinColumn(name = "tour_date_booking_id")
     private TourDateBooking tourDateBooking;

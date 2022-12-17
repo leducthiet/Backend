@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.DoAnTotNghiep.config.paypal.PaypalPaymentIntent;
 import com.DoAnTotNghiep.config.paypal.PaypalPaymentMethod;
+import com.DoAnTotNghiep.core.paypal.PayoutService;
 import com.DoAnTotNghiep.core.paypal.PaypalService;
 import com.DoAnTotNghiep.core.tour.domain.BookingState;
 import com.DoAnTotNghiep.core.tour.entity.Invoice;
@@ -64,6 +65,9 @@ public class PaymentController {
     @Autowired
     InvoiceService invoiceService;
 
+    @Autowired
+    PayoutService payoutService;
+
     @PostMapping("/pay")
     public String pay(HttpServletRequest request,
                       @RequestParam("price") double price,
@@ -108,6 +112,19 @@ public class PaymentController {
             if(payment.getState().equals("approved")){
 
                 TourBooking tourBooking = tourBookingService.getTourBookingByPaymentId(paymentId);
+                TravelAgency travelAgency = tourBooking.getTourDateBooking().getTour().getTravelAgency();
+
+                String accessToken = payoutService.getAccessToken();
+                Long senderBatchId = tourBookingService.getMaxSenderBatchId();
+                if (accessToken != null) {
+                    String payoutBatchId = payoutService.createPayout(accessToken, travelAgency.getPaypalId(),
+                            senderBatchId, tourBooking.getTotalPriceUSD().substring(0, 4));
+                    if (payoutBatchId != null) {
+                        tourBooking.setPayoutBatchId(payoutBatchId);
+                        tourBooking.setSenderBatchId(senderBatchId + 1);
+                    }
+                }
+
                 tourBooking.setBookingState(BookingState.COMPLETED);
                 tourBookingService.updateTourBooking(tourBooking);
 

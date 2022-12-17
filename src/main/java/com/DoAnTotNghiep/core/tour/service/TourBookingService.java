@@ -100,4 +100,8 @@ public class TourBookingService {
     public List<TourBooking> getTourBookingByTravelAgencyId(Long travelAgencyId) {
         return tourBookingRepository.getTourBookingByTravelAgencyId(travelAgencyId);
     }
+
+    public Long getMaxSenderBatchId() {
+        return tourBookingRepository.getMaxSenderBatchId();
+    }
 }

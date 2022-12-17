@@ -31,7 +31,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>Nguời lớn (<span class="giave" th:text="${tour.priceAdult}"></span> VNĐ)</label>
-                                <input type="text" id="quantityNguoilon" class="form-control inputQuantity" value="1" name="quantityAdult">
+                                <input type="text" id="quantityNguoilon" class="form-control inputQuantity" value="0" name="quantityAdult">
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Trẻ em từ  5 đến 11 tuổi (<span class="giave" th:text="${tour.priceChild5To11}"></span> VNĐ)</label>
@@ -44,7 +44,7 @@
 
                         </div>
 
-                        <h5 class="text-right">Tổng tiền : <span id="tongtien" class="h4 text-primary" th:utext="${tour.priceAdult}">0</span> VNĐ</h5>
+                        <h5 class="text-right">Tổng tiền : <span id="tongtien" class="h4 text-primary">0</span> VNĐ</h5>
 
                     </div>
                 </div>

@@ -44,11 +44,7 @@ public class TravelAgency {
 
     private Date expiredDate;
 
-    private String bank;
-
-    private String accountNumber;
-
-    private String accountHolder;
+    private String paypalId;
 
     @Column(unique=true)
     private String paymentId;

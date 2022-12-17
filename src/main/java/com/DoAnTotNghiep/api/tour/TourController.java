@@ -220,16 +220,7 @@ public class TourController {
                               @RequestParam("paymentMethod") Long paymentMethod,
                               @RequestParam("tourId") Long tourId) {
         try {
-
-            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserImpl userImpl = (UserImpl) userDetails;
-            tourBooking.setUsers(userService.findById(userImpl.getUsers().getId()));
-            tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
-
-            tourBooking.setBookingState(BookingState.PROCESSING);
-            tourBooking.setDateCreate(new Date());
-            Long tourBookingId = tourBookingService.createTourBooking(tourBooking).getId();
-
+            // transfer currency
             String url_str = "https://api.exchangerate.host/latest?base=VND&symbols=USD&amount=" + tourBooking.getTotalPrice();
 
             URL url = new URL(url_str);
@@ -243,6 +234,18 @@ public class TourController {
             JsonObject jsonObjRate = jsonObj.get("rates").getAsJsonObject();
             String value = jsonObjRate.get("USD").getAsString();
 
+            // create
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserImpl userImpl = (UserImpl) userDetails;
+            tourBooking.setUsers(userService.findById(userImpl.getUsers().getId()));
+            tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
+
+            tourBooking.setBookingState(BookingState.PROCESSING);
+            tourBooking.setDateCreate(new Date());
+            tourBooking.setTotalPriceUSD(value);
+            Long tourBookingId = tourBookingService.createTourBooking(tourBooking).getId();
+
+            // paypal
             if (paymentMethod == 2) {
                 return "forward:/pay?price=" + value + "&tourBookingId=" + tourBookingId;
             }
