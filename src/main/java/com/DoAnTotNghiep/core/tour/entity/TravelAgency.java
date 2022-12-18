@@ -46,6 +46,12 @@ public class TravelAgency {
 
     private String paypalId;
 
+    private String bank;
+
+    private String accountNumber;
+
+    private String accountHolder;
+
     @Column(unique=true)
     private String paymentId;
 

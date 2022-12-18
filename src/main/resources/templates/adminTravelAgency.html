@@ -104,6 +104,10 @@
                   <input type="text" class="form-control" placeholder="" name="accountHolder">
                 </div>
 
+                <div class="form-group">
+                  <label for="inputAddress2">Mã tài khoản Paypal</label>
+                  <input type="text" class="form-control" placeholder="" name="paypalId">
+                </div>
 
               </div>
               <div class="modal-footer">
@@ -152,6 +156,7 @@
                       <form method="post" action="updateTravelAgency" modelAttribute="travelAgency" enctype="multipart/form-data">
                         <div class="modal-body">
                           <input type="hidden" name="id" th:value="${travelAgency.id}">
+                          <input type="hidden" name="product_id" th:value="${travelAgency.product.id}">
                           <div class="form-group">
                             <label for="inputAddress2">Ngày hết hạn gói dịch vụ</label>
                             <input type="text" class="form-control" placeholder="" th:value="${#dates.format(travelAgency.expiredDate, 'yyyy-MM-dd')}" readonly>
@@ -194,10 +199,7 @@
                           <div class="form-row">
                             <div class="form-group col-md-6">
                               <label>Gói dịch vụ</label>
-                              <select class="form-control" name="product_id">
-                                <option disabled selected>--Chọn gói dịch vụ--</option>
-                                <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}" th:selected="${product.id} == ${travelAgency.product.id}"></option>
-                              </select>
+                              <input type="text" class="form-control" placeholder="" th:value="${travelAgency.product.name}" readonly>
                             </div>
                           </div>
 
@@ -214,6 +216,11 @@
                           <div class="form-group">
                             <label for="inputAddress2">Chủ sở hữu</label>
                             <input type="text" class="form-control" placeholder="" name="accountHolder" th:value="${travelAgency.accountHolder}">
+                          </div>
+
+                          <div class="form-group">
+                            <label for="inputAddress2">Mã tài khoản Paypal</label>
+                            <input type="text" class="form-control" placeholder="" name="paypalId" th:value="${travelAgency.paypalId}">
                           </div>
 
                         </div>
@@ -276,16 +283,8 @@
 
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#accountTable').DataTable({
-            lengthMenu: [
-                [2, 5, 10, -1],
-                [2, 5, 10, 'All'],
-            ],
-        });
-    });
-</script>
+<script src="js/dataTable.js"></script>
+
 
 </body>
 </html>

@@ -53,9 +53,17 @@ public class TourBookingController {
                 (long) tourBooking.getQuantityChild2To5() * tour.getPriceChild2To5() +
                 (long) tourBooking.getQuantityChild5To11() * tour.getPriceChild5To11();
 
+        TourBooking tourBookingDB = tourBookingService.findById(tourBooking.getId());
+
         tourBooking.setTotalPrice(totalPrice);
         tourBooking.setUsers(userService.findById(usersId));
-        tourBooking.setDateCreate(tourBookingService.findById(tourBooking.getId()).getDateCreate());
+        tourBooking.setDateCreate(tourBookingDB.getDateCreate());
+
+        tourBooking.setPaymentId(tourBookingDB.getPaymentId());
+        tourBooking.setPayoutBatchId(tourBookingDB.getPayoutBatchId());
+        tourBooking.setSenderBatchId(tourBookingDB.getSenderBatchId());
+        tourBooking.setTotalPriceUSD(tourBookingDB.getTotalPriceUSD());
+
         tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
 
         tourBookingService.updateTourBooking(tourBooking);
@@ -83,12 +91,20 @@ public class TourBookingController {
         Tour tour = tourService.findById(tourId);
         Long totalPrice =
                 (long) tourBooking.getQuantityAdult() * tour.getPriceAdult() +
-                        (long) tourBooking.getQuantityChild2To5() * tour.getPriceChild2To5() +
-                        (long) tourBooking.getQuantityChild5To11() * tour.getPriceChild5To11();
+                (long) tourBooking.getQuantityChild2To5() * tour.getPriceChild2To5() +
+                (long) tourBooking.getQuantityChild5To11() * tour.getPriceChild5To11();
+
+        TourBooking tourBookingDB = tourBookingService.findById(tourBooking.getId());
 
         tourBooking.setTotalPrice(totalPrice);
         tourBooking.setUsers(userService.findById(usersId));
-        tourBooking.setDateCreate(tourBookingService.findById(tourBooking.getId()).getDateCreate());
+        tourBooking.setDateCreate(tourBookingDB.getDateCreate());
+
+        tourBooking.setPaymentId(tourBookingDB.getPaymentId());
+        tourBooking.setPayoutBatchId(tourBookingDB.getPayoutBatchId());
+        tourBooking.setSenderBatchId(tourBookingDB.getSenderBatchId());
+        tourBooking.setTotalPriceUSD(tourBookingDB.getTotalPriceUSD());
+
         tourBooking.setTourDateBooking(tourDateBookingService.findById(tourDateBookingId));
 
         tourBookingService.updateTourBooking(tourBooking);
