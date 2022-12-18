@@ -35,34 +35,29 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    <form method="post" action="province" modelAttribute="province">
+                    <form method="post" action="province" modelAttribute="province" class="needs-validation" novalidate>
 
                         <div class="modal-body">
-
-                                    <div class="form-group">
-                                        <label for="inputEmail4">Tên địa điểm</label>
-                                        <input type="text" class="form-control" id="inputEmail4" placeholder="" name="name">
+                                <div class="form-group">
+                                    <label for="inputEmail4">Tên địa điểm</label>
+                                    <input type="text" class="form-control" id="inputEmail4" placeholder="" name="name" required>
+                                    <div class="invalid-feedback">
+                                        Mục bắt buộc.
                                     </div>
-
-
-
-
-
+                                </div>
 
                                 <div class="form-group">
                                     <label for="inputAddress">Địa chỉ</label>
-                                    <input type="text" class="form-control" id="inputAddress" placeholder="" name="address">
+                                    <input type="text" class="form-control" id="inputAddress" placeholder="" name="address" required>
+                                    <div class="invalid-feedback">
+                                        Mục bắt buộc.
+                                    </div>
                                 </div>
-
-
-
 
                                 <div class="form-group">
                                     <label for="inputAddress2">Mô tả</label>
                                     <input type="text" class="form-control" id="inputAddress2" placeholder="" name="description">
                                 </div>
-
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -188,7 +183,7 @@
 </div>
 
 <script src="js/dataTable.js"></script>
-
+<script src="js/validateBootstrap.js"></script>
 
 </body>
 </html>

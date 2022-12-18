@@ -35,29 +35,41 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form method="post" action="travelAgency" modelAttribute="travelAgency" enctype="multipart/form-data">
+            <form method="post" action="travelAgency" modelAttribute="travelAgency" enctype="multipart/form-data" class="needs-validation" novalidate>
 
               <div class="modal-body">
 
                 <div class="form-group">
                   <label for="inputEmail4">Tên đại lý lữ hành</label>
-                  <input type="text" class="form-control" id="inputEmail4" placeholder="" name="name">
+                  <input type="text" class="form-control" id="inputEmail4" placeholder="" name="name" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label for="inputAddress">Địa chỉ</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="" name="address">
+                  <input type="text" class="form-control" id="inputAddress" placeholder="" name="address" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label >Số điện thoại</label>
-                    <input type="text" class="form-control" name="phone">
+                    <input type="text" class="form-control" name="phone" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
                   <div class="form-group col-md-6">
                     <label >Email</label>
-                    <input type="text" class="form-control" name="email">
+                    <input type="text" class="form-control" name="email" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
 
@@ -71,42 +83,63 @@
 
                 <div class="form-group">
                   <label>Giấy phép kinh doanh</label>
-                  <input type="file" name="thumbnail" required>
+                  <input type="file" name="thumbnail" class="form-control" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label>Gói dịch vụ</label>
-                    <select class="form-control" name="product_id">
-                      <option disabled selected>--Chọn gói dịch vụ--</option>
-                      <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                    <select class="form-control" name="product_id" required>
+                      <option value="">--Chọn gói dịch vụ--</option>
+                      <option th:each="product : ${products}" th:value="${product.id}" th:text="@{${product.name} + ' (' + ${product.numberOfSlot} + ' tour/1 tháng)'}"></option>
                     </select>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="inputAddress2">Số tháng sử dụng</label>
-                  <input type="text" class="form-control" placeholder="" name="month">
+                  <input type="text" class="form-control" placeholder="" name="month" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label for="inputAddress2">Tên ngân hàng</label>
-                  <input type="text" class="form-control" placeholder="" name="bank">
+                  <input type="text" class="form-control" placeholder="" name="bank" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label for="inputAddress2">Số tài khoản</label>
-                  <input type="text" class="form-control" placeholder="" name="accountNumber">
+                  <input type="text" class="form-control" placeholder="" name="accountNumber" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label for="inputAddress2">Chủ sở hữu</label>
-                  <input type="text" class="form-control" placeholder="" name="accountHolder">
+                  <input type="text" class="form-control" placeholder="" name="accountHolder" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label for="inputAddress2">Mã tài khoản Paypal</label>
-                  <input type="text" class="form-control" placeholder="" name="paypalId">
+                  <input type="text" class="form-control" placeholder="" name="paypalId" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
               </div>
@@ -199,7 +232,7 @@
                           <div class="form-row">
                             <div class="form-group col-md-6">
                               <label>Gói dịch vụ</label>
-                              <input type="text" class="form-control" placeholder="" th:value="${travelAgency.product.name}" readonly>
+                              <input type="text" class="form-control" placeholder="" th:value="@{${travelAgency.product.name} + ' (' + ${travelAgency.product.numberOfSlot} + ' tour/1 tháng)'}" readonly>
                             </div>
                           </div>
 
@@ -284,7 +317,7 @@
 </div>
 
 <script src="js/dataTable.js"></script>
-
+<script src="js/validateBootstrap.js"></script>
 
 </body>
 </html>

@@ -702,6 +702,9 @@
       </div>
 
       <div class="card">
+        <div class="card-header text-danger" th:utext="@{'Đã đăng ' + ${#lists.size(tours)} + '/' + ${travelAgency.product.numberOfSlot} + ' tour'}">
+          Danh sách Tour
+        </div>
         <div class="card-body">
           <table id="accountTable" class="table table-striped table-bordered table-hover">
             <thead>

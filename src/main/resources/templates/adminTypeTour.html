@@ -35,13 +35,16 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form method="post" action="createTourType" modelAttribute="tourType">
+                        <form method="post" action="createTourType" modelAttribute="tourType" class="needs-validation" novalidate>
 
                             <div class="modal-body">
 
                                 <div class="form-group">
                                     <label for="inputEmail4">Tên chủ đề</label>
-                                    <input type="text" class="form-control" id="inputEmail4" placeholder="" name="name">
+                                    <input type="text" class="form-control" id="inputEmail4" placeholder="" name="name" required>
+                                    <div class="invalid-feedback">
+                                        Mục bắt buộc.
+                                    </div>
                                 </div>
 
 
@@ -164,7 +167,7 @@
 </div>
 
 <script src="js/dataTable.js"></script>
-
+<script src="js/validateBootstrap.js"></script>
 
 </body>
 </html>

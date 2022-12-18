@@ -35,12 +35,15 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form method="post" action="invoice" modelAttribute="invoice">
+                        <form method="post" action="invoice" modelAttribute="invoice" class="needs-validation" novalidate>
 
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Số tháng thanh toán</label>
-                                    <input type="text" class="form-control"  placeholder="" name="month">
+                                    <input type="text" class="form-control"  placeholder="" name="month" required>
+                                    <div class="invalid-feedback">
+                                        Mục bắt buộc.
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -148,7 +151,7 @@
 </div>
 
 <script src="js/dataTable.js"></script>
-
+<script src="js/validateBootstrap.js"></script>
 
 </body>
 </html>
