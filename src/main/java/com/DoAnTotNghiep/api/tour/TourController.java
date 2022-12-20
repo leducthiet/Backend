@@ -220,6 +220,42 @@ public class TourController {
                               @RequestParam("paymentMethod") Long paymentMethod,
                               @RequestParam("tourId") Long tourId) {
         try {
+
+            // validate
+            if (isBlankString(tourBooking.getCustomerName())) {
+                model.addAttribute("ErrorMessageName", "Vui lòng nhập tên");
+                model.addAttribute("tour", tourService.findById(tourId));
+                model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
+                return "Order";
+            }
+
+            if (isBlankString(tourBooking.getCustomerPhone())) {
+                model.addAttribute("ErrorMessagePhone", "Vui lòng nhập số điện thoại");
+                model.addAttribute("tour", tourService.findById(tourId));
+                model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
+                return "Order";
+            }
+
+            if (isBlankString(tourBooking.getCustomerEmail())) {
+                model.addAttribute("ErrorMessageEmail", "Vui lòng nhập Email");
+                model.addAttribute("tour", tourService.findById(tourId));
+                model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
+                return "Order";
+            }
+
+            if (tourBooking.getQuantityAdult() == 0) {
+                if (tourBooking.getQuantityChild5To11() == 0 && tourBooking.getQuantityChild2To5() == 0) {
+                    model.addAttribute("ErrorMessage", "Hãy nhập số người tham gia");
+                    model.addAttribute("tour", tourService.findById(tourId));
+                    model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
+                    return "Order";
+                }
+                model.addAttribute("ErrorMessage", "Bắt buộc phải có 1 người lớn tham gia");
+                model.addAttribute("tour", tourService.findById(tourId));
+                model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
+                return "Order";
+            }
+
             // transfer currency
             String url_str = "https://api.exchangerate.host/latest?base=VND&symbols=USD&amount=" + tourBooking.getTotalPrice();
 
@@ -304,5 +340,9 @@ public class TourController {
 
 
         response.sendRedirect("/tourOfTravelAgency?travelAgencyId=" + travelAgencyId);
+    }
+
+    boolean isBlankString(String string) {
+        return string == null || string.trim().isEmpty();
     }
 }

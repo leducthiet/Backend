@@ -25,7 +25,7 @@ public class TourSearchController {
     @GetMapping("/SearchOneCondition")
     public String getTourUser(Model model,
                               @RequestParam("keyword") String keyword) {
-        model.addAttribute("tours", tourService.getTourApprovedByKeyword(keyword));
+        model.addAttribute("tours", tourService.getTourApprovedByTourNameAndTourTypeAndProvince(keyword, "", ""));
         model.addAttribute("tourTypes", tourTypeService.getAll());
         model.addAttribute("provinces", provinceService.getAll());
         model.addAttribute("keyword", keyword);
@@ -37,11 +37,18 @@ public class TourSearchController {
                               @RequestParam("keyword") String keyword,
                               @RequestParam("tourType_id") Long tourType_id,
                               @RequestParam("province_id") Long province_id) {
-        if (tourType_id.equals(-1L)) {
-            model.addAttribute("tours", tourService.getTourApprovedByKeyword(keyword));
-        } else {
-            model.addAttribute("tours", tourService.getTourApprovedByKeywordAndTourType(keyword, tourType_id));
+        String tourTypeId = tourType_id.toString();
+        String provinceId = province_id.toString();
+
+        if (tourTypeId.equals("-1")) {
+            tourTypeId = "";
         }
+
+        if (provinceId.equals("-1")) {
+            provinceId = "";
+        }
+
+        model.addAttribute("tours", tourService.getTourApprovedByTourNameAndTourTypeAndProvince(keyword, "", ""));
         model.addAttribute("tourTypes", tourTypeService.getAll());
         model.addAttribute("provinces", provinceService.getAll());
         model.addAttribute("keyword", keyword);

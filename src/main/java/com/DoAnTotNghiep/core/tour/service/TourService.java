@@ -76,11 +76,8 @@ public class TourService {
         return tours;
     }
 
-    public List<Tour> getTourApprovedByKeyword(String keyword) {
-        return tourRepository.getTourApprovedByKeyword(keyword);
-    }
-
-    public List<Tour> getTourApprovedByKeywordAndTourType(String keyword, Long tourTypeId) {
-        return tourRepository.getTourApprovedByKeywordAndTourType(keyword, tourTypeId);
+    public List<Tour> getTourApprovedByTourNameAndTourTypeAndProvince
+            (String tourName, String tourTypeId, String provinceId) {
+        return tourRepository.getTourApprovedByTourNameAndTourTypeAndProvince(tourName, tourTypeId, provinceId);
     }
 }

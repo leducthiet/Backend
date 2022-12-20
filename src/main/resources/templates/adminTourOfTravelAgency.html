@@ -575,21 +575,30 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form method="post" action="createTour" modelAttribute="tour" enctype="multipart/form-data">
+            <form method="post" action="createTour" modelAttribute="tour" enctype="multipart/form-data" class="needs-validation" novalidate>
               <input type="hidden" name="travelAgencyId" th:value="${travelAgency.id}">
               <div class="modal-body">
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="inputEmail4">Tên tour</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="" name="tourName">
+                    <input type="text" class="form-control" id="inputEmail4" placeholder="" name="tourName" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
                   <div class="form-group col-md-2">
                     <label for="inputPassword4">Số du khách</label>
-                    <input type="text" class="form-control" id="inputPassword5" placeholder="" name="totalPeople">
+                    <input type="text" class="form-control" id="inputPassword5" placeholder="" name="totalPeople" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
                   <div class="form-group col-md-2">
                     <label for="inputPassword4">Thời gian(ngày)</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="" name="duration">
+                    <input type="text" class="form-control" id="inputPassword4" placeholder="" name="duration" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
                 </div>
@@ -597,10 +606,13 @@
                 <div class="form-row">
                   <div class="form-group col-md-12">
                     <label >Chủ đề</label>
-                    <select class="form-control" id="tourType" name="tourType_id">
-                      <option disabled selected>--Chọn chủ đề--</option>
+                    <select class="form-control" id="tourType" name="tourType_id" required>
+                      <option value="">--Chọn chủ đề--</option>
                       <option th:each="tourType : ${tourTypes}" th:value="${tourType.id}" th:text="${tourType.name}"></option>
                     </select>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
 
@@ -609,27 +621,42 @@
 
                 <div class="form-group">
                   <label >Lịch trình</label>
-                  <textarea class="mytextarea" name="schedule"></textarea>
+                  <textarea class="mytextarea form-control" name="schedule" required></textarea>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
 
                 <div class="form-group">
                   <label >Mô tả</label>
-                  <textarea class="mytextarea" name="description"></textarea>
+                  <textarea class="mytextarea form-control" name="description" required></textarea>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label >Giá vé cho người lớn</label>
-                    <input type="text" class="form-control" name="priceAdult">
+                    <input type="text" class="form-control" name="priceAdult" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
                   <div class="form-group col-md-4">
                     <label >Giá vé cho trẻ em dưới 5 tuổi</label>
-                    <input type="text" class="form-control" name="priceChild2To5">
+                    <input type="text" class="form-control" name="priceChild2To5" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
                   <div class="form-group col-md-4">
                     <label >Giá vé cho trẻ em dưới 11 tuổi</label>
-                    <input type="text" class="form-control" name="priceChild5To11">
+                    <input type="text" class="form-control" name="priceChild5To11" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
                 </div>
@@ -637,10 +664,13 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label >Địa điểm</label>
-                    <select class="form-control" id="province" name="province_id">
-                      <option disabled selected>--Chọn địa điểm--</option>
+                    <select class="form-control" id="province" name="province_id" required>
+                      <option value="">--Chọn địa điểm--</option>
                       <option th:each="province : ${provinces}" th:value="${province.id}" th:text="${province.name}"></option>
                     </select>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
 
@@ -649,17 +679,26 @@
 
                 <div class="form-group">
                   <label>Thumbnail</label>
-                  <input type="file" name="thumbnail">
+                  <input type="file" name="thumbnail" class="form-control" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label>Hình ảnh</label>
-                  <input type="file" name="images" multiple="multiple">
+                  <input type="file" name="images" multiple="multiple" class="form-control" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label>Ngày khởi hành</label>
-                  <input type="text" class="form-control date" name="tourBookingDate" placeholder="Chọn ngày khởi hành">
+                  <input type="text" class="form-control date" name="tourBookingDate" placeholder="Chọn ngày khởi hành" required>
+                  <div class="invalid-feedback">
+                    Mục bắt buộc.
+                  </div>
                 </div>
 
                 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
@@ -679,11 +718,17 @@
 
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <input type="text" class="form-control" name="lng" id="lng">
+                    <input type="text" class="form-control" name="lng" id="lng" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
                   <div class="form-group col-md-4">
-                    <input type="text" class="form-control" name="lat" id="lat">
+                    <input type="text" class="form-control" name="lat" id="lat" required>
+                    <div class="invalid-feedback">
+                      Mục bắt buộc.
+                    </div>
                   </div>
 
 
@@ -1029,7 +1074,7 @@
   </script>
 
 <script src="js/dataTable.js"></script>
-
+<script src="js/validateBootstrap.js"></script>
 
 </body>
 </html>
