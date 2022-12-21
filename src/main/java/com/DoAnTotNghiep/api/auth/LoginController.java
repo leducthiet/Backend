@@ -48,8 +48,14 @@ public class LoginController {
             //cookie.setSecure(true);
 //            session.setAttribute("username", username);
             response.addCookie(cookie);
+            if (username.contains("admin")) {
+                response.sendRedirect("/admin");
+            } else if (username.contains("manager")) {
+                response.sendRedirect("/manager");
+            } else {
+                response.sendRedirect("/");
+            }
             model.addAttribute("ErrorMessage", "Đăng nhập thất bại");
-            response.sendRedirect("/");
             return "forward:/";
         } catch (Exception e) {
             model.addAttribute("ErrorMessage", "Đăng nhập thất bại");
