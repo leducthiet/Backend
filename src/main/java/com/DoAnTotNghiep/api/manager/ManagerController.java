@@ -5,6 +5,7 @@ import com.DoAnTotNghiep.core.tour.service.TourBookingService;
 import com.DoAnTotNghiep.core.tour.service.TourFeedBackService;
 import com.DoAnTotNghiep.core.user.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ public class ManagerController {
     @Autowired
     TourFeedBackService tourFeedBackService;
 
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @GetMapping("/manager")
     public String getDashboard(Model model) {
 

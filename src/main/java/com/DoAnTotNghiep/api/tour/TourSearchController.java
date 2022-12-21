@@ -48,10 +48,12 @@ public class TourSearchController {
             provinceId = "";
         }
 
-        model.addAttribute("tours", tourService.getTourApprovedByTourNameAndTourTypeAndProvince(keyword, "", ""));
+        model.addAttribute("tours", tourService.getTourApprovedByTourNameAndTourTypeAndProvince(keyword, tourTypeId, provinceId));
         model.addAttribute("tourTypes", tourTypeService.getAll());
         model.addAttribute("provinces", provinceService.getAll());
         model.addAttribute("keyword", keyword);
+        model.addAttribute("tourTypeId", tourTypeId);
+        model.addAttribute("provinceId", provinceId);
         return "Search";
     }
 }

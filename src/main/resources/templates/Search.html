@@ -29,8 +29,8 @@
                 <div class="form-group col-md-12">
                   <label >Chủ đề</label>
                   <select class="form-control" id="tourType" name="tourType_id">
-                    <option selected value="-1">--Chọn chủ đề--</option>
-                    <option th:each="tourType : ${tourTypes}" th:value="${tourType.id}" th:text="${tourType.name}"></option>
+                    <option th:selected="${tourTypeId} == ''" value="-1">--Chọn chủ đề--</option>
+                    <option th:each="tourType : ${tourTypes}" th:value="${tourType.id}" th:text="${tourType.name}" th:selected="${tourType.id} == ${tourTypeId}"></option>
                   </select>
                 </div>
               </div>
@@ -39,8 +39,8 @@
                 <div class="form-group col">
                   <label >Địa điểm</label>
                   <select class="form-control" id="province" name="province_id">
-                    <option selected value="-1">--Chọn địa điểm--</option>
-                    <option th:each="province : ${provinces}" th:value="${province.id}" th:text="${province.name}"></option>
+                    <option th:selected="${provinceId} == ''" value="-1">--Chọn địa điểm--</option>
+                    <option th:each="province : ${provinces}" th:value="${province.id}" th:text="${province.name}" th:selected="${province.id} == ${provinceId}"></option>
                   </select>
                 </div>
 

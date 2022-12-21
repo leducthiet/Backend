@@ -10,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -67,6 +68,7 @@ public class TourController {
     @Autowired
     TourFeedBackService tourFeedBackService;
 
+    @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
     @GetMapping("/admin")
     public void adminPage(HttpServletResponse response) throws IOException {
         response.sendRedirect("/dashboard");
