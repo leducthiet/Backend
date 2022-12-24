@@ -291,7 +291,7 @@ public class TourController {
             return "Success";
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error";
+            return "ErrorPayment";
         }
     }
 
@@ -347,4 +347,13 @@ public class TourController {
     boolean isBlankString(String string) {
         return string == null || string.trim().isEmpty();
     }
+
+    @PostMapping("/paymentTourBooking")
+    public String paymentTourBooking(@RequestParam("tourBookingId") Long tourBookingId,
+                                   Model model) {
+        TourBooking tourBooking = tourBookingService.findById(tourBookingId);
+
+        return "forward:/pay?price=" + tourBooking.getTotalPriceUSD() + "&tourBookingId=" + tourBookingId;
+    }
+
 }

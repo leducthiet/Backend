@@ -255,6 +255,14 @@
                                     </div>
                                 </th:block>
 
+                                <form method="post" action="/paymentTourBooking" modelAttribute="tourBooking">
+                                    <input type="hidden" name="tourBookingId" th:value="${tourBooking.id}">
+                                    <button type="submit" th:unless="${tourBooking.bookingState.value}" class="btn btn-primary mt-1">
+                                        Thanh toán
+                                    </button>
+                                </form>
+
+
                             </td>
                         </tr>
 

@@ -15,6 +15,9 @@ public class TourBookingService {
     @Autowired
     TourBookingRepository tourBookingRepository;
 
+    @Autowired
+    MaxSenderBatchIdService maxSenderBatchIdService;
+
     public List<TourBooking> getAll() {
         return tourBookingRepository.findAll();
     }
@@ -102,6 +105,6 @@ public class TourBookingService {
     }
 
     public Long getMaxSenderBatchId() {
-        return tourBookingRepository.getMaxSenderBatchId();
+        return maxSenderBatchIdService.findById(1L).getMaxSenderBatchId();
     }
 }

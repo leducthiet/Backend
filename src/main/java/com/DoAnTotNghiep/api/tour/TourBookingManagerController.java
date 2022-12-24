@@ -83,6 +83,7 @@ public class TourBookingManagerController {
                                        @RequestParam("tourId") Long tourId) {
         model.addAttribute("tourBookings", tourBookingService.getTourBookingByTourId(tourId));
         model.addAttribute("tourOfTourBooking", tourService.findById(tourId));
+        model.addAttribute("tourDateBookings", tourDateBookingService.getTourDateBookingByTourId(tourId));
         return "managerTourBookingOfTour";
     }
 

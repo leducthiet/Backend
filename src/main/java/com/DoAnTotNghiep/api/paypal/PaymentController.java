@@ -8,12 +8,10 @@ import com.DoAnTotNghiep.core.paypal.PayoutService;
 import com.DoAnTotNghiep.core.paypal.PaypalService;
 import com.DoAnTotNghiep.core.tour.domain.BookingState;
 import com.DoAnTotNghiep.core.tour.entity.Invoice;
+import com.DoAnTotNghiep.core.tour.entity.MaxSenderBatchId;
 import com.DoAnTotNghiep.core.tour.entity.TourBooking;
 import com.DoAnTotNghiep.core.tour.entity.TravelAgency;
-import com.DoAnTotNghiep.core.tour.service.InvoiceService;
-import com.DoAnTotNghiep.core.tour.service.ProductService;
-import com.DoAnTotNghiep.core.tour.service.TourBookingService;
-import com.DoAnTotNghiep.core.tour.service.TravelAgencyService;
+import com.DoAnTotNghiep.core.tour.service.*;
 import com.DoAnTotNghiep.utils.Utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -68,6 +66,9 @@ public class PaymentController {
     @Autowired
     PayoutService payoutService;
 
+    @Autowired
+    MaxSenderBatchIdService maxSenderBatchIdService;
+
     @PostMapping("/pay")
     public String pay(HttpServletRequest request,
                       @RequestParam("price") double price,
@@ -102,7 +103,7 @@ public class PaymentController {
 
     @GetMapping(URL_PAYPAL_CANCEL)
     public String cancelPay(){
-        return "cancel";
+        return "ErrorPayment";
     }
 
     @GetMapping(URL_PAYPAL_SUCCESS)
@@ -122,6 +123,9 @@ public class PaymentController {
                     if (payoutBatchId != null) {
                         tourBooking.setPayoutBatchId(payoutBatchId);
                         tourBooking.setSenderBatchId(senderBatchId + 1);
+                        MaxSenderBatchId maxSenderBatchId = maxSenderBatchIdService.findById(1L);
+                        maxSenderBatchId.setMaxSenderBatchId(maxSenderBatchId.getMaxSenderBatchId() + 1);
+                        maxSenderBatchIdService.updateMaxSenderBatchId(maxSenderBatchId);
                     }
                 }
 
