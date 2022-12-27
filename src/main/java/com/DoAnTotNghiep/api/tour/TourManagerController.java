@@ -72,6 +72,10 @@ public class TourManagerController {
         UserImpl userImpl = (UserImpl) userDetails;
         Users users = userImpl.getUsers();
 
+        int numberTour = tourService.getTourByTravelAgencyId(users.getTravelAgency().getId()).size();
+
+        model.addAttribute("addMore", numberTour
+                < travelAgencyService.findById(users.getTravelAgency().getId()).getProduct().getNumberOfSlot());
         model.addAttribute("travelAgency", travelAgencyService.findById(users.getTravelAgency().getId()));
         model.addAttribute("travelAgencyId", users.getTravelAgency().getId());
         model.addAttribute("tours", tourService.getTourByTravelAgencyId(users.getTravelAgency().getId()));
