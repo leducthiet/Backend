@@ -24,6 +24,9 @@ The system checks whether a user has the right role, but not whether they own th
 **4. Database entities exposed across all layers**
 JPA entities are passed directly from the repository up to the controller and out to the client — leaking internal DB structure and sensitive fields. No DTO layer exists to separate the API contract from the database schema.
 
+**5. No pagination on list screens**
+All list endpoints — tour bookings, tours, travel agencies, accounts, feedbacks, invoices, contacts — load the entire table via `findAll()` with no pagination. As data grows, these screens will degrade in performance and become unusable.
+
 ---
 
 ### 🟠 Important — should resolve before any team or client use
